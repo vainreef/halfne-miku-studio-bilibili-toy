@@ -1,4 +1,3 @@
-import {createContext, createScript} from "vm-browserify";
 
 export const getConfig = (config, path) => {
     let pathList = path.split('.');
@@ -152,19 +151,19 @@ export const linkedScaleY = (basePath, targetPath) => {
 }
 
 export const parseModelJS = (code) => {
-    const res = createScript(code)
-        .runInContext(
-            createContext({
-                physicsScaleY,
-                physicsRotation,
-                getConfig,
-                getAbsolutePos,
-                rotateVec,
-                toAbsolute,
-                toRelative,
-                linkedScaleY,
-                linkedRotation
-            }));
+    const sandbox = {
+        physicsScaleY,
+        physicsRotation,
+        getConfig,
+        getAbsolutePos,
+        rotateVec,
+        toAbsolute,
+        toRelative,
+        linkedScaleY,
+        linkedRotation,
+    };
+    const fn = new Function(...Object.keys(sandbox), `${code}\n;return (typeof mikuConfig === "function" ? mikuConfig : (typeof maidConfig === "function" ? maidConfig : null))();`);
+    const res = fn(...Object.values(sandbox));
     if (!res.parseControl) res.parseControl = o => o;
     return res;
 }
