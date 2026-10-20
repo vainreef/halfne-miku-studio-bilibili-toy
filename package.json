@@ -1,9 +1,10 @@
 {
-  "name": "halfne-miku-studio-reborn",
-  "version": "0.1.0",
+  "name": "halfne-miku-studio-bilibili-toy",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "homepage": "https://yuyuyzl.github.io/halfne-miku-studio-reborn/",
+  "description": "半音未来舞台演播室 - 哔哩哔哩玩具版 (Halfne Miku Studio - Bilibili Toy)",
+  "homepage": "https://vainreef.github.io/halfne-miku-studio-bilibili-toy/",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

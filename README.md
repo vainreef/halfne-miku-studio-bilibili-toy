@@ -1,58 +1,46 @@
-# Halfne Miku Studio Reborn
+# Halfne Miku Studio - Bilibili Toy (半音未来舞台演播室 - 哔哩哔哩玩具版)
 
 ![1](https://user-images.githubusercontent.com/14276008/145691466-c11aad20-9ea5-45a6-af14-88a05cb7db4a.gif)
 
-https://yuyuyzl.github.io/halfne-miku-studio-reborn/
+在线体验：https://vainreef.github.io/halfne-miku-studio-bilibili-toy/
 
-An HTML5 port of a great flash "game" Halfne Miku Studio by JohnSu.
+本项目基于经典的 JohnSu 原作《Halfne Miku Studio》及 yuyuyzl 的 HTML5 重制版进行了移动端适配、全中文本地化重构与交互易用性升级：
+- 📱 **深度适配手机与触屏设备**：舞台等比自适应屏幕尺寸，触控精准映射视线；支持手机陀螺仪/重力感应跟随！
+- 🎭 **移动端快捷表情/口型表演板**：手机无需键盘也能一键切换眼睛（开心、鄙视、呆萌、星星眼等）、口型（啊/一/呜/诶/喔/咬牙）与表情神态（猫咪嘴、气呼呼、嘟嘴、吐舌等）！
+- 🇨🇳 **全中文操作界面与直观交互**：告别晦涩的英文参数，功能提示更清晰，操作更友好。
+- 🎬 **多图层动作时间轴与录制**：支持分层录制（视线轨迹层、表情层、口型层叠加）、ASS歌词口型自动对齐、GIF/PNG序列帧导出。
 
-Planning to add more studio feature like video exporting, model importing and so on.
+---
 
-Original: 
+## 快速上手与操作指南
 
-https://www.deviantart.com/johnsu/art/Halfne-Miku-Studio-396850314
+### 1. 视线与头部互动
+- **触控/鼠标交互**：在舞台上滑动或点击，Miku 的眼睛和头部会跟随手指/鼠标转动。
+- **重力感应/陀螺仪**：手机端点击顶部或设置中的“陀螺仪”按钮授权后，晃动手机，Miku 将随着你的手机角度生动摆头。
 
-https://github.com/Bietol/HalfneMiku
+### 2. 快捷表情与口型
+- **移动端/新手模式**：点击下方【🎭 快捷表演台】，一键选择眼神、口型发音与嘴部情绪。
+- **键盘快捷键（电脑端）**：
+  - **眼神**：`1` 开心 | `2` 鄙视 | `3` 呆萌 | `4` 星星眼 | `5` 晕晕眼 | `6` 瞥眼 | `7` 坏笑 | `8` 斗志 | `x` 眨眼/闭眼
+  - **口型发音**：`a` 啊 (AA) | `d` 一 (EE) | `w` 呜 (OO) | `s` 诶 (EH) | `e` 喔 (OH) | `q` 咬牙 (Teeth)
+  - **嘴部情绪**：`F1` 开心 | `F2` 自然 | `F3` 猫嘴 | `F4` 生气 | `F5` 嘟嘴 | `F6` 流口水 | `F7` 鸭子嘴 | `F8` 吐舌头
 
-# 快速教学
+### 3. 动画动作录制与时间轴
+- **录制模式**：点击时间轴录制按钮（或按 `Shift + 空格`），在舞台上拖拽视线或点击表情按钮即可实时录制。
+- **图层叠加**：支持多次分层录制（例如：图层1录制视线，图层2录制口型，图层3录制眨眼），回放时自底向上自动融合。
+- **时间轴微调**：空格键暂停/播放；支持设置渲染起点 `[` 与终点 `]`。
 
-https://www.bilibili.com/video/BV1yK42187Po  
+---
 
-如果你要录制鼠标动作 需要按下左键 在舞台里拖才会被录制  
-你可以在时间轴线上使用滚轮放大看看图层具体的内容  
-然后除了鼠标以外你还可以通过键盘f1-f8，1234567，qweasd，x更改表情，这些不需要鼠标左键  
-然后你可以多次新建图层录制  
-回放的时候所有的控制会从下往上叠加  
-比如一层鼠标一层表情一层嘴型一层眨眼  
-然后对于时间轴的操作快捷键，空格切换播放暂停，shift空格切换录制暂停，左键选中节点，退格删除节点，=在选中层当前时间增加节点  
-在选中节点并且处于暂停状态时，在舞台上点击可以写入鼠标位置，保持键盘操作按住并按下回车可以写入键盘位置  
-这样理论上不录制也可以进行所有编辑操作  
-在导入音乐的时候会自动配置渲染范围到音乐长度  
-你也可以使用键盘[ ]键配置渲染范围（时间轴上的[ ]图标）  
+## 本地开发与构建
 
-# 渲染器  
+```bash
+# 安装依赖
+npm install
 
-https://github.com/yuyuyzl/halfne-miku-studio-reborn-render  
+# 启动本地开发服务器
+npm start
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode with Vite.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.\
-The page will hot-reload if you make edits.
-
-### `npm run preview:model`
-
-Starts the dev server in model preview mode.\
-Copy a model file into `public/model-preview.js` and open `/?preview=1`.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder using Vite.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# 构建生产版本 (输出到 build 目录)
+npm run build
+```

@@ -1,54 +1,30 @@
 import './App.less';
-import Miku from "./Miku/Miku";
-import {forwardRef, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {
-    Box, Tab, Tabs, ToggleButton, ToggleButtonGroup
-} from "@mui/material";
-import FiberManualRecord from "@mui/icons-material/FiberManualRecord";
-import PlayArrow from "@mui/icons-material/PlayArrow";
-import Pause from "@mui/icons-material/Pause";
-import FastForward from "@mui/icons-material/FastForward";
-import FastRewind from "@mui/icons-material/FastRewind";
-import Refresh from "@mui/icons-material/Refresh";
-import FileOpen from "@mui/icons-material/FileOpen";
-import Save from "@mui/icons-material/Save";
-import Lock from "@mui/icons-material/Lock";
-import LockOpen from "@mui/icons-material/LockOpen";
-import MusicNote from "@mui/icons-material/MusicNote";
-import FirstPage from "@mui/icons-material/FirstPage";
-import Mouse from "@mui/icons-material/MouseOutlined";
-import ArrowDownward from "@mui/icons-material/ArrowDownward";
-import ArrowUpward from "@mui/icons-material/ArrowUpward";
-import Close from "@mui/icons-material/Close";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Camera from "@mui/icons-material/Camera";
-import Videocam from "@mui/icons-material/Videocam";
-import CopyAll from "@mui/icons-material/CopyAll";
-import Timer from "@mui/icons-material/Timer";
-import ContentCut from "@mui/icons-material/ContentCut";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import FileSaver from 'file-saver';
-
-import defaultConfig from './defaultModel'
-import {deepDiff, parseModelJS} from "./Engine/modelUtils";
-import html2canvas from "html2canvas";
 import JSZip from "jszip";
-import Animated_GIF from './Animated_GIF';
-import {getInitPhysics, parseConfig, work} from "./Engine/core";
+import html2canvas from "html2canvas";
 import * as asscompiler from "ass-compiler";
 import japanese from "japanese";
+
+import defaultConfig from './defaultModel';
+import { parseModelJS } from "./Engine/modelUtils";
+import Animated_GIF from './Animated_GIF';
+import Stage from './components/Stage/Stage';
+import QuickPad from './components/QuickPad/QuickPad';
+import Controls from './components/Controls/Controls';
 
 const W = 800;
 const H = 600;
 
 let waitUntilNextFrame = requestAnimationFrame;
-
 let fpsArr = [];
 
-const query = (new URL(window.location.href)).searchParams
+const query = (new URL(window.location.href)).searchParams;
 const isPure = query.get('pure');
 const remote = query.get('remote');
 const model = query.get('model');
+
 const formatTime = (millis) => Math.floor(millis / 1000 / 60) + ':' + ('00' + Math.floor(millis / 1000 % 60)).slice(-2);
 const parseKeyMapping = (keyList, keyMapping) => keyList.map(o => keyMapping.filter(([k, ...v]) => v.includes(o)).map(([k]) => k))
     .reduce((p, c) => [...p, ...c], []);
@@ -59,11 +35,10 @@ const getRawControl = (record, targetTime) => {
         const layerData = layer.a;
         const rawControlIndex = layerData?.reduce?.((p, c, i) => c.t <= targetTime ? i : p, undefined);
         if (rawControlIndex === undefined) return {};
-        const rawControl = {...layerData[rawControlIndex]?.c};
+        const rawControl = { ...layerData[rawControlIndex]?.c };
         const rawControlNext = layerData[rawControlIndex + 1]?.c;
-        // console.log(rawControl);
+
         if (rawControlNext && rawControl.mouseX !== undefined && rawControlNext.mouseX !== undefined) {
-            // console.log(rawControl,rawControlNext);
             const lt = layerData[rawControlIndex]?.t;
             const rt = layerData[rawControlIndex + 1]?.t;
             const kl = (rt - targetTime) / (rt - lt);
@@ -76,849 +51,40 @@ const getRawControl = (record, targetTime) => {
             delete rawControl.mouseY;
         }
         return rawControl;
-    })
-    // debugger;
+    });
+
     const newControl = layerControls.reduce((p, c) => ({
         ...p, ...c,
         keyInput: [...(p.keyInput || []), ...(c.keyInput || [])]
-    }), {})
+    }), {});
     if (newControl?.mouseX === undefined) {
         delete newControl.mouseX;
         delete newControl.mouseY;
     }
     return newControl;
-}
+};
 
 let dmListener;
 
 function requestDeviceMotion(callback) {
     if (window.DeviceMotionEvent && DeviceMotionEvent.requestPermission) {
         DeviceMotionEvent.requestPermission().then(function (state) {
-            if (state == "granted") {
+            if (state === "granted") {
                 callback(null);
-            } else callback(new Error("Permission denied by user"));
+            } else {
+                callback(new Error("用户拒绝了传感器权限"));
+            }
         }, function (err) {
             callback(err);
         });
     } else if (window.ondevicemotion !== undefined) {
         callback(null);
-    } else callback(new Error("DeviceMotion is not supported."));
+    } else {
+        callback(new Error("当前设备或浏览器不支持陀螺仪/加速度感应"));
+    }
 }
 
-function isDOMOverlap(a, b) {
-    const rectA = a.getBoundingClientRect();
-    const rectB = b.getBoundingClientRect();
-    const nonIntersect =
-        rectB.right < rectA.left ||
-        rectB.left > rectA.right ||
-        rectB.bottom < rectA.top ||
-        rectB.top > rectA.bottom;
-    return !nonIntersect;
-}
-
-function TimeLineButtons({
-                             playType,
-                             togglePlayType,
-                             recordRef,
-                             canRecord,
-                             canPlay,
-                             setEditorTimestamp,
-                             resetMiku,
-                             runPhysics,
-                             setRunPhysics,
-                             setAudioFile,
-                             setRecord,
-                             playSpeed,
-                             setPlaySpeed
-                         }) {
-    return <>
-        {useMemo(() => <ToggleButtonGroup
-            value={playType}
-            exclusive
-            onChange={(e, v) => togglePlayType(v)}
-        >
-            <ToggleButton value={-1} disabled={canRecord} title='录制 (Shift+Space)'>
-                <FiberManualRecord/>
-            </ToggleButton>
-            <ToggleButton value={1} disabled={canPlay} title='播放 (Space)'>
-                <PlayArrow/>
-            </ToggleButton>
-            <ToggleButton value={2} title='暂停 (Space)'>
-                <Pause/>
-            </ToggleButton>
-        </ToggleButtonGroup>, [canPlay, canRecord, playType, togglePlayType])}
-
-        &nbsp;
-
-        {useMemo(() => <ToggleButtonGroup>
-            <ToggleButton value={-1} onClick={e => {
-                setEditorTimestamp(x => 0)
-            }} title='首帧'><FirstPage/></ToggleButton>
-            <ToggleButton value={-1} onClick={e => {
-                setEditorTimestamp(x => Math.max(x - 100, 0))
-            }} title='后退'><FastRewind/></ToggleButton>
-            <ToggleButton value={1} onClick={e => {
-                setEditorTimestamp(x => x + 100)
-            }} title='前进'><FastForward/></ToggleButton>
-        </ToggleButtonGroup>, [setEditorTimestamp])}
-
-        &nbsp;
-
-
-        {useMemo(() => <ToggleButtonGroup
-            value={playSpeed}
-            exclusive
-            onChange={(e, v) => setPlaySpeed(v)}
-        >
-            <ToggleButton value={0.5} disabled={playType === 1 || playType === -1} title='0.5x'>
-                0.5x
-            </ToggleButton>
-            <ToggleButton value={0.75} disabled={playType === 1 || playType === -1} title='0.75x'>
-                0.75x
-            </ToggleButton>
-            <ToggleButton value={1} disabled={playType === 1 || playType === -1} title='1x'>
-                1x
-            </ToggleButton>
-        </ToggleButtonGroup>, [playSpeed, playType, setPlaySpeed])}
-        &nbsp;
-
-        {useMemo(() => <ToggleButtonGroup>
-            <ToggleButton value={1} onClick={() => resetMiku()} title='重置'><Refresh/></ToggleButton>
-        </ToggleButtonGroup>, [resetMiku])}
-
-        &nbsp;
-
-        {useMemo(() => <ToggleButtonGroup
-            value={runPhysics}
-            exclusive
-            onChange={() => setRunPhysics(x => !x)}>
-            <ToggleButton value={false} title='停用物理'><Lock/></ToggleButton>
-        </ToggleButtonGroup>, [runPhysics, setRunPhysics])}
-
-        &nbsp;
-        {useMemo(() =>
-            <ToggleButtonGroup>
-                <ToggleButton value={1} title='导入音乐' onClick={() => {
-                    try {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.onchange = (e) => {
-                            console.log(e.target.files[0]);
-                            const fr = new FileReader();
-                            fr.onload = () => setAudioFile(fr.result);
-                            fr.readAsDataURL(e.target.files[0]);
-                        };
-                        input.click();
-                    } catch {
-                    }
-                }}><MusicNote/></ToggleButton>
-
-                <ToggleButton value={1} title='导入动作' onClick={() => {
-                    try {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.onchange = (e) => {
-                            const fr = new FileReader();
-                            fr.onload = () => {
-                                let _record = JSON.parse(fr.result);
-                                _record = _record.map(o => Array.isArray(o) ? {a: o} : o);
-                                setRecord(_record);
-                            };
-                            fr.readAsText(e.target.files[0])
-                        };
-                        input.click();
-                    } catch {
-                    }
-                }}><FileOpen/></ToggleButton>
-                <ToggleButton value={1} title='导出动作' onClick={() => {
-                    const blob = new Blob([JSON.stringify(recordRef.current)], {type: "text/plain;charset=utf-8"});
-                    FileSaver.saveAs(blob, "HMSR.json");
-                }} disabled={canPlay}><Save/></ToggleButton>
-            </ToggleButtonGroup>, [canPlay, recordRef, setAudioFile, setRecord])}
-
-    </>
-}
-
-function LayerOptions({layerData, i, recordLength, setRecord, editorTimestampRef, setLayer}) {
-    const {l = false, v = true} = layerData;
-    return useMemo(() => <div className='timeline-L-layer-item-options'>
-        {!l && i !== recordLength - 1 ? <ArrowUpward onClick={() => setRecord(record => {
-            [record[i], record[i + 1]] = [record[i + 1], record[i]]
-            return [...record]
-        })} fontSize={'inherit'}/> : null}
-        {!l && i !== 0 ? <ArrowDownward onClick={() => setRecord(record => {
-            [record[i], record[i - 1]] = [record[i - 1], record[i]]
-            return [...record]
-        })} fontSize={'inherit'}/> : null}
-        {!l && (v ? <Visibility onClick={() => setRecord(record => {
-            record[i].v = false;
-            return [...record]
-        })} fontSize={'inherit'}/> : <VisibilityOff onClick={() => setRecord(record => {
-            record[i].v = true;
-            return [...record]
-        })} fontSize={'inherit'}/>)}
-        {!l && <CopyAll onClick={e => {
-            setRecord(record => record.reduce((p, o, ii) => ii === i ? [...p, o, JSON.parse(JSON.stringify(o))] : [...p, o], []));
-            e.stopPropagation();
-        }} fontSize={'inherit'}/>}
-        {!l && <ContentCut onClick={e => {
-            setRecord(record => {
-                const layerLeft = record[i].a.filter(o => o.t <= editorTimestampRef.current);
-                const layerRight = record[i].a.filter(o => o.t >= editorTimestampRef.current);
-                if (layerLeft.length === 0 || layerRight.length === 0) return record;
-                return record.reduce((p, o, ii) => ii === i ? [...p, {
-                    ...JSON.parse(JSON.stringify(o)),
-                    a: layerLeft
-                }, {...JSON.parse(JSON.stringify(o)), a: layerRight}] : [...p, o], [])
-            });
-            e.stopPropagation();
-        }} fontSize={'inherit'}/>}
-        {!l && <Timer onClick={e => {
-            setRecord(record => {
-                const delta = +prompt('Dt(ms)', 0) || 0;
-                if (!+delta) return record;
-                record[i].a = record[i].a.map(o => ({...o, t: o.t + delta}));
-                return [...record];
-            });
-            e.stopPropagation();
-        }} fontSize={'inherit'}/>}
-        {!l && <Close onClick={e => {
-            setRecord(record => record.filter((o, ii) => ii !== i));
-            setLayer(undefined);
-            e.stopPropagation();
-        }} fontSize={'inherit'}/>}
-
-        {l ? <Lock onClick={() => setRecord(record => {
-            record[i].l = false;
-            return [...record]
-        })} fontSize={'inherit'}/> : <LockOpen onClick={() => setRecord(record => {
-            record[i].l = true;
-            return [...record]
-        })} fontSize={'inherit'}/>}
-    </div>, [editorTimestampRef, i, l, recordLength, setLayer, setRecord, v]);
-}
-
-function TimeLine({
-                      editorTimestamp,
-                      editorTimestampRef,
-                      setEditorTimestamp,
-                      record,
-                      setRecord,
-                      layer,
-                      setLayer,
-                      renderStart,
-                      renderEnd,
-                      keyMapping,
-                      playType
-                  }) {
-    const [scale, setScale] = useState(600);
-    const [centerOffset, setCenterOffset] = useState(30000);
-    const timelineRef = useRef();
-    const selectionDragging = useRef(false);
-    const rectSelectStart = useRef();
-    const [rectSelectEnd, setRectSelectEnd] = useState(undefined);
-    const rectSelect = useRef();
-
-    const t2l = useCallback((timestamp) => ((timestamp - centerOffset) / scale + 50), [centerOffset, scale]);
-    const l2t = useCallback((left) => centerOffset + (left - 50) * scale, [centerOffset, scale]);
-    const timelineWheel = useCallback((e) => {
-        if (e.ctrlKey) {
-            console.log(e.deltaY);
-            setScale(x => {
-                const a = Math.min(Math.max(x + x * (10 / e.deltaY), 10), 1e5);
-                console.log(a);
-                return a;
-            });
-        } else {
-            setCenterOffset(x => Math.max(x + e.deltaY * scale / 100, scale * 50))
-        }
-    }, [scale]);
-    const rulerScale = [1e2, 2e2, 5e2, 1e3, 2e3, 5e3, 1e4, 2e4, 6e4, 12e4, 3e5, 6e5].reduce((p, c) => p ? p : c >= scale * 5 ? c : 0, 0) || 6e5;
-    const marks = rulerScale ? (new Array(Math.floor(scale * 100 / rulerScale))).fill(0)
-        .map((o, i) => ((Math.ceil(l2t(0) / rulerScale) + i) * rulerScale)) : [];
-    useEffect(() => {
-        if ((editorTimestamp - centerOffset) / scale + 50 < 0) {
-            setCenterOffset(Math.max(scale * 50, editorTimestamp - scale * 40))
-        }
-        if ((editorTimestamp - centerOffset) / scale + 50 > 100) {
-            setCenterOffset(editorTimestamp + scale * 40)
-        }
-    }, [editorTimestamp, scale])
-    useEffect(() => {
-        if ((-centerOffset) / scale + 50 > 0) {
-            setCenterOffset(scale * 50);
-        }
-    }, [scale])
-
-    const handleTimelineMouse = useCallback(e => {
-        const {x, width} = timelineRef.current.getBoundingClientRect();
-        const {clientX} = e;
-        setEditorTimestamp(Math.max(l2t(100 * (clientX - x) / width), 0));
-    }, [l2t, setEditorTimestamp]);
-
-    return <div className='timeline'>
-        {rectSelectEnd &&
-            <div ref={rectSelect}
-                 style={{
-                     position: 'fixed',
-                     zIndex: 10000,
-                     pointerEvents: "none",
-                     left: Math.min(rectSelectStart.current.clientX, rectSelectEnd.clientX),
-                     width: Math.abs(rectSelectStart.current.clientX - rectSelectEnd.clientX),
-                     top: Math.min(rectSelectStart.current.clientY, rectSelectEnd.clientY),
-                     height: Math.abs(rectSelectStart.current.clientY - rectSelectEnd.clientY),
-                     background: 'rgba(169,244,255,0.4)',
-                     border: '1px solid rgba(106,186,196,0.7)'
-                 }}/>}
-        <div className='timeline-L'>
-            {useMemo(() =>
-                    <div className='timeline-L-toolbar'>
-                        <div className='timedisplay' onWheel={e => {
-                            setEditorTimestamp(x => Math.max(x + e.deltaY, 0))
-                        }} title={editorTimestamp.toFixed(2) + '\n使用滚轮前进后退'}>
-                            <b>{formatTime(editorTimestamp)}</b>
-                            <span className='small'>&nbsp;{('000' + Math.floor(editorTimestamp % 1000)).slice(-3)}</span>
-                        </div>
-                    </div>
-                , [editorTimestamp, setEditorTimestamp])}
-            {useMemo(() =>
-                    <div className='timeline-L-layer'>
-
-                        {record.map((o, i) => {
-                            const {n = `Layer ${i}`} = o;
-                            return <div
-                                className={'timeline-L-layer-item ' + (i === layer ? 'timeline-L-layer-item-selected' : "")}
-                                onClick={() => setLayer(i)}
-                            >
-                        <span onDoubleClick={() => {
-                            setRecord(record => {
-                                record[i].n = prompt('Layer name:', n) || n;
-                                return [...record]
-                            })
-                        }}>{n}</span>
-                                <LayerOptions {...{
-                                    layerData: o,
-                                    i,
-                                    recordLength: record.length,
-                                    setRecord,
-                                    editorTimestampRef,
-                                    setLayer
-                                }}/>
-                            </div>
-                        })}
-
-                        <div
-                            className={'timeline-L-layer-item ' + (undefined === layer ? 'timeline-L-layer-item-selected' : "")}
-                            onClick={() => setLayer(undefined)}
-                        >
-                            New Layer
-                        </div>
-                    </div>
-                , [editorTimestamp, layer, record, setLayer, setRecord])}
-        </div>
-        <div className='timeline-R'
-             ref={timelineRef}
-        >
-
-            {useMemo(() =>
-                    <div
-                        className='timeline-R-time'
-                        onWheel={timelineWheel}
-                        onClick={handleTimelineMouse}
-                        onMouseMove={e => {
-                            !e.shiftKey && e.buttons && handleTimelineMouse(e)
-                        }}
-                    >
-                        {marks.map(o => <div className='timeline-R-time-mark' style={{left: t2l(o) + '%'}}/>)}
-                        {marks.map(o => o % 1000 === 0 ? <div className='timeline-R-time-time'
-                                                              style={{left: t2l(o) + '%'}}>{formatTime(o)}</div> : null)}
-                        {(t2l(renderStart) >= 0 && t2l(renderStart) < 100) ?
-                            <div className='timeline-R-time-render-L' style={{left: t2l(renderStart) + '%'}}/> : null}
-                        {(t2l(renderEnd) >= 0 && t2l(renderEnd) < 100) ?
-                            <div className='timeline-R-time-render-R' style={{left: t2l(renderEnd) + '%'}}/> : null}
-                        {(t2l(editorTimestamp) >= 0 && t2l(editorTimestamp) < 100) ?
-                            <div className='timeline-R-time-arrow' style={{left: t2l(editorTimestamp) + '%'}}/> : null}
-                    </div>
-                , [editorTimestamp, handleTimelineMouse, marks, renderEnd, renderStart, t2l, timelineWheel])}
-
-            {useMemo(() =>
-                    <div
-                        className='timeline-R-content'
-                        // onMouseMove={e=>{e.buttons&&handleTimelineMouse(e)}}
-                        onWheel={timelineWheel}
-                        onMouseMove={e => {
-                            if (e.buttons && selectionDragging.current) {
-                                const {x, width} = timelineRef.current.getBoundingClientRect();
-                                const {clientX} = e;
-                                const newTS = (Math.max(l2t(100 * (clientX - x) / width), 0));
-                                let dTS;
-                                setRecord(record => {
-                                        for (let l of record) {
-                                            let shouldSort = false;
-                                            for (let c of l.a) {
-                                                if (c.selected === 2) {
-                                                    shouldSort = true;
-                                                    dTS = newTS - c.t;
-                                                    c.t = newTS;
-                                                }
-                                            }
-                                            for (let c of l.a) {
-                                                if (c.selected === 1) {
-                                                    shouldSort = true;
-                                                    c.t += dTS;
-                                                }
-                                            }
-                                            if (shouldSort) l.a = l.a.sort((a, b) => a.t - b.t);
-                                        }
-                                        return [...record];
-                                    }
-                                )
-                            } else {
-                                if (e.buttons && e.shiftKey) {
-                                    setRectSelectEnd(e);
-                                    console.log(rectSelect.current)
-                                    setRecord(record => {
-                                        for (let l of record)
-                                            for (let c of l.a) {
-                                                if (c.selected) delete c.selected
-                                            }
-                                        document.querySelectorAll('.timeline-R-content-layer-control').forEach(el => {
-                                            if (isDOMOverlap(el, rectSelect.current)) {
-                                                console.log(el.dataset);
-                                                record[el.dataset.layerIndex].a[el.dataset.nodeIndex].selected = 1;
-                                            }
-                                        })
-                                        return [...record]
-                                    })
-
-                                    // setRecord(record => {
-                                    //         for (let l of record) {
-                                    //             for (let c of l.a) {
-                                    //                 // do select
-                                    //             }
-                                    //         }
-                                    //         return [...record];
-                                    //     }
-                                    // )
-                                }
-                            }
-                        }}
-                        onMouseDown={e => {
-                            if (e.shiftKey) {
-                                rectSelectStart.current = e;
-                                setRectSelectEnd(e);
-                            }
-
-                        }
-                        }
-                        onMouseUp={e => {
-                            selectionDragging.current = false;
-                            rectSelectStart.current = undefined;
-                            setRectSelectEnd(undefined);
-                        }}
-                    >
-                        {record.map(({a: layerArr = [], l = false}, layerIndex) => {
-                            let renderNodes = layerArr.filter((r, itemIndex, a) => t2l(r.t) >= 0 && t2l(r.t) < 100);
-                            renderNodes = [layerArr[layerArr.indexOf(renderNodes[0]) - 1], ...renderNodes, layerArr[layerArr.indexOf(renderNodes[renderNodes.length - 1]) + 1]].filter(o => o);
-                            const shouldSimplify = playType === -1 || (renderNodes.length > 100 && scale >= 100);
-                            return (<div className='timeline-R-content-layer'>
-                                {(shouldSimplify && layerArr.length) ? <div className='timeline-R-content-layer-block'
-                                                                            style={{
-                                                                                left: t2l(layerArr[0].t) + '%',
-                                                                                right: 'calc( ' + (100 - t2l(layerArr[layerArr.length - 1].t)) + '% - 1px ',
-                                                                                background: layerArr.some(r => r.c.mouseX) ? '#efe' : layerArr.some(r => r.c.keyInput) ? '#eef' : undefined,
-                                                                            }}>
-                                </div> : null}
-                                {!shouldSimplify ? renderNodes.map((r, i, o) =>
-                                    <div
-                                        className={'timeline-R-content-layer-control' + (r.selected ? ' timeline-R-content-layer-control-selected' : '')}
-                                        style={{
-                                            left: t2l(r.t) + '%',
-                                            right: (o?.[i + 1]?.t && (r.c?.mouseX || r.c?.keyInput)) ? 'calc( ' + (100 - t2l(o?.[i + 1]?.t)) + '% ' + (r.selected ? ' + 2px' : '') : undefined,
-                                            background: r.c.mouseX ? '#efe' : r.c.keyInput ? '#eef' : undefined,
-                                        }}
-                                        title={JSON.stringify(r.c)}
-                                        data-layer-index={layerIndex}
-                                        data-node-index={layerArr.indexOf(r)}
-                                        onMouseDown={(e) => {
-                                            if (r.selected) {
-                                                for (let line of record) {
-                                                    for (let c of line.a) {
-                                                        if (c.selected) c.selected = 1;
-                                                    }
-                                                }
-                                            } else {
-                                                r.selected = 2;
-                                                for (let line of record) {
-                                                    let multiSelectStart = false;
-                                                    for (let c of line.a) {
-                                                        if (c.selected)
-                                                            if (e.shiftKey && !l)
-                                                                multiSelectStart = true;
-                                                            else if (c !== r && !e.ctrlKey) delete c.selected;
-                                                        if (multiSelectStart) c.selected = 1;
-                                                        if (c === r) multiSelectStart = false;
-                                                    }
-                                                    if (multiSelectStart) {
-                                                        let state = 0;
-                                                        for (let c of line.a) {
-                                                            if (c.selected) {
-                                                                if (state === 2) delete c.selected;
-                                                                if (state === 1) state = 2;
-                                                                if (state === 0) state = 1;
-                                                            } else {
-                                                                if (state === 1) c.selected = 1;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            r.selected = 2;
-                                            setRecord([...record]);
-                                            window.record = record;
-                                            console.log(e);
-                                            // selectionDragging.current=true;
-                                            // e.stopPropagation();
-                                        }}
-                                        onDoubleClick={(e) => {
-                                            if (r.selected) {
-                                                setRecord(record => {
-                                                    for (let l of record) {
-                                                        for (let c of l.a) {
-                                                            if (c.selected) {
-                                                                c.c.keyInput = parseKeyMapping(window.keyList, keyMapping);
-                                                                console.log(c.c.keyInput);
-                                                            }
-                                                        }
-                                                    }
-                                                    return [...record];
-                                                })
-                                            }
-                                        }}
-                                        onClick={() => {
-                                            setEditorTimestamp(r.t);
-                                        }}
-                                    >
-                                        <div
-                                            className='timeline-R-content-layer-control-dragger'
-                                            onMouseDown={(e) => {
-                                                if (!l && !e.shiftKey && !e.ctrlKey) selectionDragging.current = true;
-                                                // e.stopPropagation();
-                                            }}
-                                        />
-                                        {r.c.mouseX !== undefined ?
-                                            <Mouse className='timeline-R-content-layer-control-icon'/> : null}
-                                        {r.c.keyInput !== undefined ? r.c.keyInput.map(s => <div
-                                            className='timeline-R-content-layer-control-key'>&nbsp;{s.replace(/[a-z ]/g, '')}</div>) : null}
-                                    </div>
-                                ) : null}
-                            </div>)
-                        })}
-                        <div className='timeline-R-content-layer'/>
-                    </div>
-                , [timelineWheel, record, l2t, setRecord, playType, scale, t2l, keyMapping, setEditorTimestamp])}
-        </div>
-    </div>
-}
-
-function Controls({
-                      playType,
-                      togglePlayType,
-                      recordRef,
-                      layer,
-                      setEditorTimestamp,
-                      resetMiku,
-                      runPhysics,
-                      setRunPhysics,
-                      setAudioFile,
-                      setRecord,
-                      record,
-                      setLayer,
-                      renderStart,
-                      renderEnd,
-                      keyMapping,
-                      setKeyMapping,
-                      editorTimestamp,
-                      editorTimestampRef,
-                      config,
-                      stageBackground,
-                      setStageBackground,
-                      control,
-                      renderFps, setRenderFps, renderScale, setRenderScale, renderTarget, setRenderTarget,
-                      fpsTarget, setFpsTarget, setConfig, fps, controlTypePanel, stageRef, playSpeed, setPlaySpeed
-                  }) {
-
-    const controlsRef = useRef();
-    const [tabPage, setTabPage] = useState(0);
-
-    useEffect(() => {
-        const ll = e => e.preventDefault();
-        const el = controlsRef?.current;
-        console.log(el);
-        el?.addEventListener?.('wheel', ll, {passive: false});
-        return () =>
-            el?.removeEventListener?.('wheel', ll, {passive: false});
-    }, [])
-    return (<div className="controls" ref={controlsRef}>
-        {/*<FormControlLabel control={<Checkbox checked={checked} onChange={e=>setChecked(e.target.checked)}/>} label="Label"/>*/}
-        {useMemo(() => <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-            <Tabs value={tabPage} onChange={(e, v) => setTabPage(v)} aria-label="basic tabs example">
-                <Tab label="Timeline"/>
-                <Tab label="Info"/>
-                <Tab label="Background"/>
-                <Tab label="Render"/>
-                <Tab label="KeyMapping"/>
-                <Tab label="Settings"/>
-            </Tabs>
-        </Box>, [tabPage])}
-
-        {useMemo(() => tabPage === 0 && <div className='controls-panel controls-panel-control'>
-            <TimeLineButtons {...{
-                playType,
-                togglePlayType,
-                recordRef,
-                layer,
-                setEditorTimestamp,
-                resetMiku,
-                runPhysics,
-                setRunPhysics,
-                setAudioFile,
-                setRecord,
-                canRecord: record[layer]?.l,
-                canPlay: record?.length === 0,
-                playSpeed,
-                setPlaySpeed
-            }}/>
-            <TimeLine {...{
-                editorTimestamp,
-                editorTimestampRef,
-                setEditorTimestamp,
-                record,
-                setRecord,
-                layer,
-                setLayer,
-                renderStart,
-                renderEnd,
-                keyMapping,
-                playType
-            }}/>
-        </div>, [editorTimestamp, editorTimestampRef, keyMapping, layer, playSpeed, playType, record, recordRef, renderEnd, renderStart, resetMiku, runPhysics, setAudioFile, setEditorTimestamp, setLayer, setPlaySpeed, setRecord, setRunPhysics, tabPage, togglePlayType])}
-        {tabPage === 1 && <div className='controls-panel'>
-            {Object.entries(control).map(([k, v]) => {
-                return <div key={k}><b>{k}</b>: {typeof v === 'object' ? JSON.stringify(v) : v}</div>
-            })}
-        </div>}
-        {useMemo(() => tabPage === 2 && <div className='controls-panel'>
-            <ToggleButtonGroup
-                value={stageBackground}
-                exclusive
-                onChange={(e, v) => setStageBackground(v || false)}
-                label="Background"
-            >
-                <ToggleButton value={false} aria-label="Transparent">
-                    Transparent
-                </ToggleButton>
-                <ToggleButton value={'#FFFFFF'} aria-label="White">
-                    White
-                </ToggleButton>
-                <ToggleButton value={'#0000FF'} aria-label="Blue">
-                    Blue
-                </ToggleButton>
-                <ToggleButton value={'#00FF00'} aria-label="Green">
-                    Green
-                </ToggleButton>
-            </ToggleButtonGroup>
-            &nbsp;
-            <ToggleButtonGroup
-                value={stageBackground}
-                exclusive
-                onChange={(e, v) => setStageBackground(v || false)}
-                label="Background"
-            >
-                {config.background ?
-                    Object.entries(config.background).map(([k, v]) =>
-                        <ToggleButton value={v} aria-label={k} key={k}>
-                            {k}
-                        </ToggleButton>
-                    )
-                    : null}
-            </ToggleButtonGroup>
-        </div>, [config.background, stageBackground, tabPage])}
-        {useMemo(() => tabPage === 3 && <div className='controls-panel controls-panel-control'>
-            <ToggleButtonGroup>
-                <ToggleButton value={1} title='保存当前画面' onClick={() => {
-                    html2canvas(stageRef.current, {
-                        backgroundColor: null,
-                        scale: renderScale
-                    }).then(function (canvas) {
-                        canvas.toBlob(o => FileSaver.saveAs(o, 'HMSR-Render.png'));
-                    });
-                }}><Camera/></ToggleButton>
-            </ToggleButtonGroup>
-            &nbsp;
-            <ToggleButtonGroup
-                value={playType === 3 ? renderTarget : ''}
-                exclusive
-                onChange={(e, v) => {
-                    if (playType !== 3) {
-                        setRenderTarget(v);
-                        togglePlayType(3, renderStart);
-                    } else togglePlayType(2)
-                }}
-            >
-                <ToggleButton value={'ZIP'} disabled={record?.length === 0}
-                              title='渲染为PNG序列 (较慢)'><Videocam/></ToggleButton>
-                <ToggleButton value={'GIF'} disabled={record?.length === 0}
-                              title='渲染为GIF动图'><Videocam/></ToggleButton>
-            </ToggleButtonGroup>
-            &nbsp;
-            <ToggleButtonGroup>
-                <ToggleButton value={1} title='保存渲染数据集' onClick={async () => {
-                    let renderControl = config.parseControl(getRawControl(record, renderStart));
-                    let renderPhysics = getInitPhysics(parseConfig(config.model, renderControl));
-                    let renderStates = [];
-                    const totFrame = Math.floor((renderEnd - renderStart) * renderFps / 1000);
-                    let lastReport = 0;
-                    for (let frame = 0; frame <= totFrame; frame++) {
-                        renderControl = config.parseControl({...renderControl, ...getRawControl(record, renderStart + frame * 1000 / renderFps)})
-                        work(frame === 0 ? 0 : (1000 / renderFps),
-                            config.model,
-                            renderControl,
-                            renderPhysics,
-                            p => {
-                                renderPhysics = p
-                            },
-                            r => renderStates.push(frame === 0 ? r : deepDiff(renderStates[0], r)),
-                        )
-                        if (performance.now() - lastReport > 100) {
-                            lastReport = performance.now();
-                            document.querySelector('.rendertime').innerHTML = (100 * frame / totFrame).toFixed(2) + '%';
-                            await new Promise(res => setTimeout(res, 0));
-                        }
-                    }
-                    const outputData = {
-                        fps: renderFps,
-                        background: stageBackground,
-                        scale: renderScale,
-                        renderStates,
-                    }
-                    const blob = new Blob([JSON.stringify(outputData)], {type: "text/plain;charset=utf-8"});
-                    FileSaver.saveAs(blob, "HMSR-Render-Data.json");
-                    document.querySelector('.rendertime').innerHTML = '';
-                    console.log(renderStates);
-                }} disabled={record?.length === 0}><Save/></ToggleButton>
-            </ToggleButtonGroup>
-            &nbsp;
-            <ToggleButtonGroup
-                value={renderFps}
-                exclusive
-                onChange={(e, v) => setRenderFps(v || renderFps)}
-                label="Render FPS"
-            >
-                <ToggleButton value={30} aria-label="30 FPS">
-                    30 FPS
-                </ToggleButton>
-                <ToggleButton value={60} aria-label="60 FPS">
-                    60 FPS
-                </ToggleButton>
-                <ToggleButton value={120} aria-label="120 FPS">
-                    120 FPS
-                </ToggleButton>
-            </ToggleButtonGroup>
-            &nbsp;
-            <ToggleButtonGroup
-                value={renderScale}
-                exclusive
-                onChange={(e, v) => setRenderScale(v || renderScale)}
-                label="Render Scale"
-            >
-                <ToggleButton value={1} aria-label="1">
-                    1x
-                </ToggleButton>
-                <ToggleButton value={1.8} aria-label="2">
-                    1.8x
-                </ToggleButton>
-                <ToggleButton value={2} aria-label="2">
-                    2x
-                </ToggleButton>
-                <ToggleButton value={2.4} aria-label="2">
-                    2.4x
-                </ToggleButton>
-                <ToggleButton value={3} aria-label="3">
-                    3x
-                </ToggleButton>
-            </ToggleButtonGroup>
-            &nbsp;
-            {<div className='timedisplay'>
-                <b className='rendertime'/>
-                {playType === 3 && <>
-                    <b>{Math.floor((editorTimestamp - renderStart) * renderFps / 1000)}/{Math.floor((renderEnd - renderStart) * renderFps / 1000)}</b>
-                    <span
-                        className='small'>&nbsp;{(Math.floor((editorTimestamp - renderStart) * renderFps / 1000) / Math.floor((renderEnd - renderStart) * renderFps / 1000) * 100).toFixed(2)}%</span>
-                    {fps > 0 && <span
-                        className='small'>&nbsp;ETA:{formatTime((renderEnd - editorTimestamp) * renderFps / fps)}</span>}
-                </>}
-            </div>}
-        </div>, [config, editorTimestamp, fps, playType, record, renderEnd, renderFps, renderScale, renderStart, stageBackground, tabPage, togglePlayType])}
-        {useMemo(() => tabPage === 4 && <div className='controls-panel'>
-            {keyMapping.map(([k, ...v], i) => <div key={k}><b onClick={() => {
-                setKeyMapping(_keyMapping => {
-                    _keyMapping[i] = [k, ...window.keyList];
-                    return [..._keyMapping];
-                })
-            }} title={'按住目标按键并单击以修改按键绑定'}>{k}</b>: {v?.length ? v.join(', ') : 'None'}</div>)}
-        </div>, [keyMapping, tabPage])}
-        {useMemo(() => tabPage === 5 && <div className='controls-panel controls-panel-control'>
-            <ToggleButtonGroup>
-                <ToggleButton value={1} title='导入模型' onClick={() => {
-                    try {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.onchange = (e) => {
-                            const fr = new FileReader();
-                            fr.onload = () => {
-                                let newConfig = parseModelJS(fr.result);
-                                setConfig(newConfig);
-                                resetMiku();
-                            };
-                            fr.readAsText(e.target.files[0])
-                        };
-                        input.click();
-                    } catch {
-                    }
-                }}><FileOpen/></ToggleButton>
-            </ToggleButtonGroup>
-
-            &nbsp;
-            <ToggleButtonGroup
-                value={fpsTarget}
-                exclusive
-                onChange={(e, v) => setFpsTarget(v || 0)}
-                label="FPS Limit"
-            >
-                <ToggleButton value={0} aria-label="OFF">
-                    RAF
-                </ToggleButton>
-                <ToggleButton value={Infinity} aria-label="OFF">
-                    Unlimited
-                </ToggleButton>
-                <ToggleButton value={30} aria-label="30 FPS">
-                    30 FPS
-                </ToggleButton>
-                <ToggleButton value={60} aria-label="60 FPS">
-                    60 FPS
-                </ToggleButton>
-                <ToggleButton value={120} aria-label="120 FPS">
-                    120 FPS
-                </ToggleButton>
-            </ToggleButtonGroup>
-            &nbsp;
-            {controlTypePanel}
-        </div>, [tabPage, fpsTarget, controlTypePanel, resetMiku])}
-    </div>)
-}
-
-function App() {
+export default function App() {
     const stageRef = useRef();
     const latestMousePos = useRef([W / 2, H / 2]);
     const latestMouseDown = useRef(false);
@@ -927,7 +93,6 @@ function App() {
     const [timestamp, setTimestamp] = useState(performance.now());
 
     const [config, setConfig] = useState(defaultConfig);
-
     const [control, setControl] = useState(config.parseControl());
     const [keyMapping, setKeyMapping] = useState(config.defaultKeyMapping);
 
@@ -939,10 +104,11 @@ function App() {
     const [playType, setPlayType] = useState(0);
     const [playSpeed, setPlaySpeed] = useState(1);
     const playTypeChangeTime = useRef();
-    // const [currentFrame,setCurrentFrame]=useState();
     const [record, setRecord] = useState([]);
     const [mikuResetter, setMikuResetter] = useState(0);
-    const [stageBackground, setStageBackground] = useState((config.background && Object?.entries?.(config.background)?.[0]?.[1]) || '#FFFFFF');
+    const [stageBackground, setStageBackground] = useState(
+        (config.background && Object.entries(config.background)?.[0]?.[1]) || '#4F4859'
+    );
     const [layer, setLayer] = useState();
     const [editorTimestamp, setEditorTimestamp] = useState(0);
     const [runPhysics, setRunPhysics] = useState(true);
@@ -951,33 +117,137 @@ function App() {
     const [renderStart, setRenderStart] = useState(undefined);
     const [renderEnd, setRenderEnd] = useState(undefined);
     const [renderScale, setRenderScale] = useState(1);
-    const [renderTarget, setRenderTarget] = useState();
+    const [renderTarget, setRenderTarget] = useState('GIF');
+
+    // 操作模式：'pad' 为触屏快捷表演台，'studio' 为时间轴动作制作室
+    const [uiMode, setUiMode] = useState('pad');
+
+    // 虚拟面板选中的按键列表（眼神、口型、情绪等）
+    const [activeVirtualKeys, setActiveVirtualKeys] = useState([]);
 
     const editorTimestampRef = useRef(0);
     useEffect(() => {
-        editorTimestampRef.current = editorTimestamp
+        editorTimestampRef.current = editorTimestamp;
     }, [editorTimestamp]);
 
     const recordRef = useRef([]);
     useEffect(() => {
-        recordRef.current = record
+        recordRef.current = record;
     }, [record]);
 
-    const resetMiku = useCallback((rawControl = {mouseX: W / 2, mouseY: H / 2, keyInput: []}) => {
+    const resetMiku = useCallback((rawControl = { mouseX: W / 2, mouseY: H / 2, keyInput: [] }) => {
         latestMousePos.current = [rawControl.mouseX, rawControl.mouseY];
+        setActiveVirtualKeys([]);
+        if (window.keyList) window.keyList = [];
         setControl(config.parseControl(rawControl));
         setMikuResetter(i => i + 1);
-    }, [config])
+    }, [config]);
+
+    // 快速定位视线
+    const handleSetGaze = useCallback((targetX, targetY) => {
+        latestMousePos.current = [targetX, targetY];
+        if (playType === 2) {
+            setRecord(prev => {
+                for (let l of prev) {
+                    for (let c of l.a) {
+                        if (c.selected) {
+                            c.c.mouseX = targetX;
+                            c.c.mouseY = targetY;
+                        }
+                    }
+                }
+                return [...prev];
+            });
+        }
+    }, [playType]);
+
+    // 触控表演板按键触发与切换
+    const handleTriggerKey = useCallback((keyId, category) => {
+        setActiveVirtualKeys(prev => {
+            let next = [...prev];
+            if (category === 'eye') {
+                next = next.filter(k => !k.startsWith('Eye') || k === 'EyeBlink');
+                next.push(keyId);
+            } else if (category === 'mouthShape') {
+                const mouthShapes = ['MouthAA', 'MouthEE', 'MouthOO', 'MouthEH', 'MouthOH', 'MouthTeeth', 'MouthMM'];
+                next = next.filter(k => !mouthShapes.includes(k));
+                if (keyId !== 'MouthMM') next.push(keyId);
+            } else if (category === 'mood') {
+                const moods = ['MouthHappy', 'MouthNeutral', 'MouthCat', 'MouthAngry', 'MouthPout', 'MouthDrool', 'MouthDuck', 'MouthTongue'];
+                next = next.filter(k => !moods.includes(k));
+                next.push(keyId);
+            }
+            return next;
+        });
+
+        // 如果处于录制中，实时同步写入
+        if (playType === -1 && layer !== undefined) {
+            // 实时录制将在 useEffect[control] 中自动捕获 keyInput
+        }
+
+        // 如果处于暂停编辑节点状态，直接将表情写入当前选中的节点
+        if (playType === 2) {
+            setRecord(prev => {
+                for (let l of prev) {
+                    for (let c of l.a) {
+                        if (c.selected) {
+                            let curr = c.c.keyInput || [];
+                            if (category === 'eye') {
+                                curr = curr.filter(k => !k.startsWith('Eye') || k === 'EyeBlink');
+                                curr.push(keyId);
+                            } else if (category === 'mouthShape') {
+                                const mouthShapes = ['MouthAA', 'MouthEE', 'MouthOO', 'MouthEH', 'MouthOH', 'MouthTeeth', 'MouthMM'];
+                                curr = curr.filter(k => !mouthShapes.includes(k));
+                                if (keyId !== 'MouthMM') curr.push(keyId);
+                            } else if (category === 'mood') {
+                                const moods = ['MouthHappy', 'MouthNeutral', 'MouthCat', 'MouthAngry', 'MouthPout', 'MouthDrool', 'MouthDuck', 'MouthTongue'];
+                                curr = curr.filter(k => !moods.includes(k));
+                                curr.push(keyId);
+                            }
+                            c.c.keyInput = curr;
+                        }
+                    }
+                }
+                return [...prev];
+            });
+        }
+    }, [layer, playType]);
+
+    // 应用一键组合神情
+    const handleApplyPreset = useCallback((keysArray) => {
+        setActiveVirtualKeys(keysArray);
+        if (playType === 2) {
+            setRecord(prev => {
+                for (let l of prev) {
+                    for (let c of l.a) {
+                        if (c.selected) {
+                            c.c.keyInput = [...keysArray];
+                        }
+                    }
+                }
+                return [...prev];
+            });
+        }
+    }, [playType]);
+
+    // 切换眨眼/闭眼状态
+    const handleToggleBlink = useCallback(() => {
+        setActiveVirtualKeys(prev => {
+            const hasBlink = prev.includes('EyeBlink');
+            const next = hasBlink ? prev.filter(k => k !== 'EyeBlink') : [...prev, 'EyeBlink'];
+            return next;
+        });
+    }, []);
 
     const togglePlayType = useCallback((v, fromTimestamp = editorTimestampRef.current) => {
         if (v === -1 && record[layer]?.l) return;
-        if (v === 1 || v === 3)
-            if (!record.length) return;
+        if ((v === 1 || v === 3) && !record.length) return;
+
         editorTimestampOnPlay.current = fromTimestamp;
         playTypeChangeTime.current = performance.now();
+
         if (v === -1) {
-            // setCurrentFrame(undefined);
-            if (layer === undefined) setLayer(record.length)
+            if (layer === undefined) setLayer(record.length);
         }
         if (v === 1 || v === 3) {
             setEditorTimestamp(fromTimestamp);
@@ -993,32 +263,35 @@ function App() {
             }
         }
 
-        if (playType === -1) {
-            setRecord(record => {
-                record[layer].a.forEach((o, i) => {
-                    if (i === record[layer].a.length - 1 || i === 0) return;
-                    // debugger;
+        if (playType === -1 && record[layer]?.a) {
+            setRecord(prevRecord => {
+                if (!prevRecord[layer]?.a) return prevRecord;
+                prevRecord[layer].a.forEach((o, i) => {
+                    if (i === prevRecord[layer].a.length - 1 || i === 0) return;
                     if (
-                        (record[layer].a[i - 1].c.mouseX === record[layer].a[i].c.mouseX) &&
-                        (record[layer].a[i + 1].c.mouseX === record[layer].a[i].c.mouseX) &&
-                        (record[layer].a[i - 1].c.mouseY === record[layer].a[i].c.mouseY) &&
-                        (record[layer].a[i + 1].c.mouseY === record[layer].a[i].c.mouseY) &&
-                        (record[layer].a[i - 1].c.keyInput?.join('||') === record[layer].a[i].c.keyInput?.join('||'))
-                    ) record[layer].a[i].del = true;
-                })
-                record[layer].a = record[layer].a.filter(o => !o.del);
-                record[layer].a = record[layer].a.sort((a, b) => a.t - b.t);
-                return [...record];
-            })
+                        (prevRecord[layer].a[i - 1].c.mouseX === prevRecord[layer].a[i].c.mouseX) &&
+                        (prevRecord[layer].a[i + 1].c.mouseX === prevRecord[layer].a[i].c.mouseX) &&
+                        (prevRecord[layer].a[i - 1].c.mouseY === prevRecord[layer].a[i].c.mouseY) &&
+                        (prevRecord[layer].a[i + 1].c.mouseY === prevRecord[layer].a[i].c.mouseY) &&
+                        (prevRecord[layer].a[i - 1].c.keyInput?.join('||') === prevRecord[layer].a[i].c.keyInput?.join('||'))
+                    ) prevRecord[layer].a[i].del = true;
+                });
+                prevRecord[layer].a = prevRecord[layer].a.filter(o => !o.del);
+                prevRecord[layer].a = prevRecord[layer].a.sort((a, b) => a.t - b.t);
+                return [...prevRecord];
+            });
         }
 
         setPlayType(v || 0);
-    }, [layer, playType, record.length, resetMiku]);
+    }, [layer, playType, record, resetMiku]);
 
-
+    // 帧率控制循环
     useEffect(() => {
         let frametime = 0;
-        const _waitUntilNextFrame = fpsTarget ? (f => setTimeout(f, fpsTarget !== Infinity ? (1000 / fpsTarget - frametime) : 0)) : requestAnimationFrame
+        const _waitUntilNextFrame = fpsTarget
+            ? (f => setTimeout(f, fpsTarget !== Infinity ? Math.max(0, 1000 / fpsTarget - frametime) : 0))
+            : requestAnimationFrame;
+
         waitUntilNextFrame = cb => {
             _waitUntilNextFrame((...args) => {
                 const tic = performance.now();
@@ -1030,41 +303,39 @@ function App() {
                 }
                 fpsArr.push(now);
                 setFps((fpsArr.length - 1) * 1000 / (now - fpsArr[0]));
-            })
-        }
+            });
+        };
     }, [fpsTarget]);
 
+    // 键盘操作响应
     useEffect(() => {
         const gotoNode = (next = true) => {
             let timetarget;
-            setRecord(record => {
-                for (let line of record) {
+            setRecord(prev => {
+                for (let line of prev) {
                     let orig;
                     for (let i = next ? 0 : line.a.length - 1; next ? (i < line.a.length) : i >= 0; next ? i++ : i--) {
                         let c = line.a[i];
                         if (c.selected) {
                             orig = c;
-                        } else {
-                            if (orig && c.c.keyInput) {
-                                c.selected = 2;
-                                timetarget = c.t;
-                                delete orig.selected;
-                                break;
-                            }
+                        } else if (orig && c.c.keyInput) {
+                            c.selected = 2;
+                            timetarget = c.t;
+                            delete orig.selected;
+                            break;
                         }
                     }
                 }
-                return [...record];
-            })
-            if (timetarget) setEditorTimestamp(timetarget);
+                return [...prev];
+            });
+            if (timetarget !== undefined) setEditorTimestamp(timetarget);
+        };
 
-        }
         const editorKeyboardHandler = e => {
             if (e.type === 'keydown') {
-                console.log(e);
                 switch (e.key) {
                     case ' ':
-                        if (window.keyList[0] !== 'Enter') {
+                        if (!window.keyList || window.keyList[0] !== 'Enter') {
                             if (playType === 0 || playType === 2) {
                                 if (e.shiftKey) togglePlayType(-1);
                                 else togglePlayType(1);
@@ -1074,47 +345,46 @@ function App() {
                         }
                         break;
                     case 'Escape':
-                        setRecord(record => {
-                            for (let l of record)
+                        setRecord(prev => {
+                            for (let l of prev) {
                                 for (let c of l.a) {
-                                    if (c.selected) delete c.selected
+                                    if (c.selected) delete c.selected;
                                 }
-                            return [...record];
-                        })
+                            }
+                            return [...prev];
+                        });
                         break;
                     case 'Delete':
                     case 'Backspace':
-                        setRecord(record => record.map(l => ({...l, a: l.a.filter(o => !o.selected)})));
+                        setRecord(prev => prev.map(l => ({ ...l, a: l.a.filter(o => !o.selected) })));
                         break;
                     case 'Enter':
-                        setRecord(record => {
-                            for (let l of record) {
+                        setRecord(prev => {
+                            for (let l of prev) {
                                 for (let c of l.a) {
                                     if (c.selected) {
                                         c.c.keyInput = parseKeyMapping(window.keyList, keyMapping);
-                                        console.log(c.c.keyInput);
                                     }
                                 }
                             }
-                            return [...record];
-                        })
+                            return [...prev];
+                        });
                         break;
                     case '=':
-                        setRecord(record => {
-                                if (!record?.[layer]?.l) {
-                                    if (layer === undefined) {
-                                        setLayer(record.length);
-                                        return [...record, {a: [{t: editorTimestampRef.current, c: {}}]}];
-                                    } else {
-                                        if (record[layer].a.filter(o => o.t === editorTimestampRef.current).length === 0) {
-                                            record[layer].a.push({t: editorTimestampRef.current, c: {}});
-                                            record[layer].a = record[layer].a.sort((a, b) => a.t - b.t);
-                                        }
+                        setRecord(prev => {
+                            if (!prev?.[layer]?.l) {
+                                if (layer === undefined) {
+                                    setLayer(prev.length);
+                                    return [...prev, { a: [{ t: editorTimestampRef.current, c: {} }] }];
+                                } else {
+                                    if (prev[layer].a.filter(o => o.t === editorTimestampRef.current).length === 0) {
+                                        prev[layer].a.push({ t: editorTimestampRef.current, c: {} });
+                                        prev[layer].a = prev[layer].a.sort((a, b) => a.t - b.t);
                                     }
                                 }
-                                return [...record];
                             }
-                        )
+                            return [...prev];
+                        });
                         break;
                     case 'ArrowLeft':
                         setEditorTimestamp(x => Math.max(x - 100, 0));
@@ -1136,9 +406,8 @@ function App() {
                         break;
                     case 'v':
                         if (e.ctrlKey) {
-                            const s = prompt('Romanji Autofill', window.lastRomanjiInput || '');
+                            const s = prompt('罗马音/ASS字幕自动对齐:', window.lastRomanjiInput || '');
                             if (s === null) return;
-                            console.log(s);
                             window.lastRomanjiInput = s;
 
                             const parsed = asscompiler.parse(s);
@@ -1147,12 +416,11 @@ function App() {
                                     let timeToStart = dialogueLine.Start * 1000;
                                     return dialogueLine.Text.parsed.map(word => {
                                         word.Start = timeToStart;
-                                        if (word?.tags?.[0]?.k)
-                                            timeToStart += word?.tags?.[0]?.k * 10
+                                        if (word?.tags?.[0]?.k) timeToStart += word?.tags?.[0]?.k * 10;
                                         word.End = timeToStart;
                                         return word;
                                     }).filter(word => word.text && word.tags[0].k);
-                                }).reduce((p, c) => [...p, ...c])
+                                }).reduce((p, c) => [...p, ...c], [])
                                     .map(word => ({
                                         ...word,
                                         romanji: japanese.romanize(word.text.replace(/.*\|</, ''))
@@ -1166,146 +434,82 @@ function App() {
                                             u: ['MouthOO'],
                                         })[word.romanji.replace(/[^a-z]/g, '').slice(-1)] || ['MouthMM']
                                     }));
-                                console.log(mouthList);
+
                                 if (layer === undefined) {
-                                    setRecord(record => {
+                                    setRecord(prev => {
                                         let time0 = mouthList[0].Start;
                                         const selTime0 = editorTimestampRef.current;
-                                        setLayer(record.length);
-                                        return [...record, {
+                                        setLayer(prev.length);
+                                        return [...prev, {
                                             a: mouthList.map(word => ({
                                                 t: word.Start - time0 + selTime0,
                                                 te: word.End - time0 + selTime0,
-                                                c: {keyInput: word.keyInput}
+                                                c: { keyInput: word.keyInput }
                                             })).reduce((p, c, i, a) =>
-                                                    (a[i + 1] && c.te !== a[i + 1].t) ? [...p, {t: c.t, c: c.c}, {
-                                                        t: c.te,
-                                                        c: {}
-                                                    }] : [...p, {t: c.t, c: c.c}]
-                                                , [])
+                                                (a[i + 1] && c.te !== a[i + 1].t)
+                                                    ? [...p, { t: c.t, c: c.c }, { t: c.te, c: {} }]
+                                                    : [...p, { t: c.t, c: c.c }], []
+                                            )
                                         }];
                                     });
-                                } else setRecord(record => {
-                                    for (let l of record) {
-                                        let k = -1;
-                                        let time0 = mouthList[0].Start;
-                                        let selTime0;
-                                        for (let ci = 0; ci < l.a.length; ci++) {
-                                            const c = l.a[ci];
-                                            if (c.selected) {
-                                                k = 0;
-                                                selTime0 = c.t;
-                                            }
-                                            if (k >= 0 && mouthList[k] && c.c.keyInput?.length) {
-                                                if (k >= mouthList.length) {
-                                                    k = -1;
-                                                    continue;
-                                                }
-                                                let StartK = k;
-                                                let CenterK = k;
-                                                while (Math.abs(mouthList[StartK]?.Start - time0 - (c.t - selTime0)) > Math.abs(mouthList[StartK + 1]?.Start - time0 - (c.t - selTime0))) {
-                                                    StartK += 1;
-                                                }
-                                                const centerT = (c.t + l.a[ci + 1].t) / 2 - selTime0;
-                                                while (Math.abs((mouthList[CenterK]?.Start + mouthList[CenterK]?.End) / 2 - time0 - (centerT)) > Math.abs((mouthList[CenterK + 1]?.Start + mouthList[CenterK + 1]?.End) / 2 - time0 - (centerT))) {
-                                                    CenterK += 1;
-                                                }
-                                                if (StartK < CenterK)
-                                                    k = CenterK;
-                                                else
-                                                    k = StartK;
-                                                console.log('apply', c.t, mouthList[k]?.text, mouthList[k]?.romanji, StartK - CenterK)
-                                                c.c.keyInput = mouthList[k].keyInput;
-                                                // c.c.debug = {d: StartK - CenterK}
-                                            }
-                                        }
-                                        console.log(l);
-                                    }
-                                    return [...record];
-                                })
-                            } else {
-                                const mouthList = s.replace(/\n/gm, ' ').replace(/[^a-z ]/gm, '').split(' ').filter(o => o).map(o => ({
-                                    // tsu:'zi'
-                                })[o] || o).map(o => ({
-                                    a: ['MouthAA'],
-                                    e: ['MouthEH'],
-                                    i: ['MouthEE'],
-                                    o: ['MouthOH'],
-                                    u: ['MouthOO'],
-                                })[o[o.length - 1]] || ['MouthMM']);
-                                console.log(mouthList);
-                                setRecord(record => {
-                                    for (let l of record) {
-                                        let k = -1;
-                                        for (let c of l.a) {
-                                            if (c.selected) {
-                                                k = 0;
-                                            }
-                                            if (k >= 0 && c.c.keyInput?.length) {
-                                                c.c.keyInput = mouthList[k];
-                                                k += 1;
-                                                if (k >= mouthList.length) k = -1;
-                                            }
-                                        }
-                                    }
-                                    return [...record];
-                                })
+                                }
                             }
                         }
                         break;
+                    default:
+                        break;
                 }
             }
-            e.preventDefault();
-        }
+        };
+
         if (!isPure) {
             window.addEventListener('keydown', editorKeyboardHandler);
             window.addEventListener('keyup', editorKeyboardHandler);
         }
 
-
         const keyboardHandler = e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             if (e.type === 'keydown' && e.key !== 'Alt' && e.key !== 'Control' && e.key !== 'Shift'
-                && !e.ctrlKey
-                && !e.altKey
+                && !e.ctrlKey && !e.altKey
             ) {
+                if (!window.keyList) window.keyList = [];
                 if (!window.keyList.includes(e.key)) window.keyList.push(e.key);
                 if (window.keyList[0] === 'Enter') {
-                    setRecord(record => {
-                        for (let l of record) {
+                    setRecord(prev => {
+                        for (let l of prev) {
                             for (let c of l.a) {
                                 if (c.selected) {
                                     c.c.keyInput = parseKeyMapping(window.keyList.slice(1), keyMapping);
-                                    console.log(c.c.keyInput);
                                 }
                             }
                         }
-                        return [...record];
-                    })
+                        return [...prev];
+                    });
                 }
-            } else {
-                window.keyList = window.keyList.filter(o => o !== e.key);
-                if (window.keyList[0] === 'Enter' && window.keyList.length === 1) {
-                    gotoNode();
-
+            } else if (e.type === 'keyup') {
+                if (window.keyList) {
+                    window.keyList = window.keyList.filter(o => o !== e.key);
+                    if (window.keyList[0] === 'Enter' && window.keyList.length === 1) {
+                        gotoNode();
+                    }
                 }
             }
-            e.preventDefault();
-            console.log(window.keyList);
         };
 
         window.addEventListener('keydown', keyboardHandler);
         window.addEventListener('keyup', keyboardHandler);
+
         return () => {
             if (!isPure) {
                 window.removeEventListener('keydown', editorKeyboardHandler);
                 window.removeEventListener('keyup', editorKeyboardHandler);
             }
-
             window.removeEventListener('keydown', keyboardHandler);
             window.removeEventListener('keyup', keyboardHandler);
-        }
-    }, [keyMapping, layer, playType, renderEnd, renderStart, togglePlayType])
+        };
+    }, [isPure, keyMapping, layer, playType, renderEnd, renderStart, togglePlayType]);
 
+    // 远程控制轮询支持
     useEffect(() => {
         if (remote) {
             let cancelled = false;
@@ -1313,91 +517,97 @@ function App() {
                 let _delay = 5;
                 while (!cancelled) {
                     try {
-                        await fetch(remote).then(res => res.json()).then(({mouseX, mouseY, keyInput, delay}) => {
-                            !cancelled && (latestMousePos.current = [mouseX, mouseY, keyInput]);
+                        await fetch(remote).then(res => res.json()).then(({ mouseX, mouseY, keyInput, delay }) => {
+                            if (!cancelled) latestMousePos.current = [mouseX, mouseY, keyInput];
                             _delay = delay;
                         });
-                    } catch {
-                    } finally {
+                    } catch {} finally {
                         await new Promise((resolve) => setTimeout(resolve, _delay));
                     }
                 }
-            }
+            };
             poll();
-            return () => {
-                cancelled = true;
-            }
+            return () => { cancelled = true; };
         }
     }, []);
 
+    // 模型 URL 传参加载支持
     useEffect(() => {
-
         if (model) {
             fetch(model).then(res => res.text()).then(s => {
                 let newConfig = parseModelJS(s);
                 setConfig(newConfig);
                 resetMiku();
-            })
+            });
         }
-    }, []);
+    }, [resetMiku]);
 
-    // Main Play Control
+    // 主播放与实时循环
     useEffect(() => {
         if (playType === 0 || playType === -1) {
-            if (!window.keyList) window.keyList = []
+            if (!window.keyList) window.keyList = [];
             let lastTime = performance.now();
             let canceled = false;
-            const updateControl = (timestamp = performance.now()) => {
+
+            const updateControl = (ts = performance.now()) => {
                 if (canceled) return;
-                const dt = Math.min(timestamp - lastTime, 50);
-                lastTime = timestamp;
+                const dt = Math.min(ts - lastTime, 50);
+                lastTime = ts;
+
                 const x = latestMousePos.current[0];
                 const y = latestMousePos.current[1];
-                const keyInput = latestMousePos.current[2] || parseKeyMapping(window.keyList, keyMapping);
-                setControl(control => {
+                const physicalKeys = parseKeyMapping(window.keyList, keyMapping);
+                // 组合物理键盘与触控虚拟面板的按键
+                const combinedKeys = Array.from(new Set([
+                    ...physicalKeys,
+                    ...(latestMousePos.current[2] || []),
+                    ...activeVirtualKeys
+                ]));
+
+                setControl(prevControl => {
                     const ratio = Math.min(0.02 * dt, 1);
-                    const easeX = control.mouseX * (1 - ratio) + x * ratio;
-                    const easeY = control.mouseY * (1 - ratio) + y * ratio;
-                    const distance = Math.sqrt((easeX - control.mouseX) * (easeX - control.mouseX) + (easeY - control.mouseY) * (easeY - control.mouseY))
-                    const rawControl =
-                        (x === undefined || y === undefined) ?
-                            {keyInput: keyInput} : (distance < 1) ?
-                                {mouseX: x, mouseY: y, keyInput: keyInput} :
-                                {mouseX: easeX.toFixed(1), mouseY: easeY.toFixed(1), keyInput: keyInput};
-                    return config.parseControl({...control, ...rawControl, timestamp});
-                })
-                setTimestamp(timestamp);
+                    const easeX = prevControl.mouseX * (1 - ratio) + x * ratio;
+                    const easeY = prevControl.mouseY * (1 - ratio) + y * ratio;
+                    const distance = Math.hypot(easeX - prevControl.mouseX, easeY - prevControl.mouseY);
+
+                    const rawControl = (x === undefined || y === undefined)
+                        ? { keyInput: combinedKeys }
+                        : (distance < 1)
+                            ? { mouseX: x, mouseY: y, keyInput: combinedKeys }
+                            : { mouseX: +easeX.toFixed(1), mouseY: +easeY.toFixed(1), keyInput: combinedKeys };
+
+                    return config.parseControl({ ...prevControl, ...rawControl, timestamp: ts });
+                });
+                setTimestamp(ts);
                 waitUntilNextFrame(updateControl);
-            }
+            };
+
             waitUntilNextFrame(updateControl);
-            return () => {
-                canceled = true;
-            }
+            return () => { canceled = true; };
         }
+
         if (playType === 1) {
             let canceled = false;
-            console.log(record);
-            const updateControl = (timestamp = performance.now()) => {
+            const updateControl = (ts = performance.now()) => {
                 if (canceled) return;
-                const targetTime = (timestamp - playTypeChangeTime.current) * playSpeed + editorTimestampOnPlay.current;
+                const targetTime = (ts - playTypeChangeTime.current) * playSpeed + editorTimestampOnPlay.current;
                 setEditorTimestamp(targetTime);
                 setTimestamp(targetTime);
                 waitUntilNextFrame(updateControl);
-            }
+            };
             waitUntilNextFrame(updateControl);
-            return () => {
-                canceled = true;
-            }
+            return () => { canceled = true; };
         }
+
         if (playType === 3) {
             let canceled = false;
-            console.log(record);
             let zip = new JSZip();
-            const ag = new Animated_GIF({repeat: 0, disposal: 2, transparent: true});
+            const ag = new Animated_GIF({ repeat: 0, disposal: 2, transparent: true });
             ag.setSize(800 * renderScale, 600 * renderScale);
             ag.setDelay(1000 / renderFps);
             let partCount = 0;
             let size = 0;
+
             const updateControl = (currentFrame) => {
                 if (canceled) return;
                 const now = performance.now();
@@ -1406,47 +616,45 @@ function App() {
                 }
                 fpsArr.push(now);
                 setFps((fpsArr.length - 1) * 1000 / (now - fpsArr[0]));
-                console.log(currentFrame);
+
                 html2canvas(stageRef.current, {
                     backgroundColor: null,
                     removeContainer: false,
                     scale: renderScale
-                }).then(function (canvas) {
+                }).then((canvas) => {
                     document.querySelectorAll('.html2canvas-container').forEach(el => {
                         const iframe = el.contentWindow;
-                        if (el) {
+                        if (el && iframe) {
                             el.src = 'about:blank';
                             iframe.document.write('');
                             iframe.document.clear();
                             iframe.close();
                             el.remove();
                         }
-                    })
+                    });
+
                     if (renderTarget === 'ZIP') {
-                        canvas.toBlob(o => {
-                            size += o.size;
+                        canvas.toBlob(blob => {
+                            size += blob.size;
                             if (size > 1024 * 1024 * 1024) {
                                 const currentPartCount = partCount;
                                 partCount++;
-                                zip.generateAsync({type: 'blob'}).then(o => {
-                                        FileSaver.saveAs(o, `HMSR-Render-part${currentPartCount}.zip`);
-                                    }
-                                )
+                                zip.generateAsync({ type: 'blob' }).then(b => {
+                                    FileSaver.saveAs(b, `Miku-Render-part${currentPartCount}.zip`);
+                                });
                                 zip = new JSZip();
                                 size = 0;
                             }
-                            console.log(o.size);
-                            zip.file(`HMSR-Render-${('00000' + currentFrame).slice(-5)}.png`, o);
-                            console.log(performance.memory.totalJSHeapSize / performance.memory.jsHeapSizeLimit);
-                            // FileSaver.saveAs(o, `HMSR-Render-${('00000' + currentFrame).slice(-5)}.png`);
-                            console.log(o);
-
+                            zip.file(`Miku-Frame-${('00000' + currentFrame).slice(-5)}.png`, blob);
                         });
                     } else {
-                        ag.addFrameImageData(canvas.getContext('2d').getImageData(0, 0, 800 * renderScale, 600 * renderScale))
+                        ag.addFrameImageData(
+                            canvas.getContext('2d').getImageData(0, 0, 800 * renderScale, 600 * renderScale)
+                        );
                     }
+
                     const targetTime = (currentFrame + 1) * 1000 / renderFps + editorTimestampOnPlay.current;
-                    if (targetTime <= renderEnd) {
+                    if (targetTime <= (renderEnd || 5000)) {
                         setEditorTimestamp(targetTime);
                         setTimestamp(targetTime);
                         setTimeout(() => updateControl(currentFrame + 1));
@@ -1454,114 +662,88 @@ function App() {
                         togglePlayType(2);
                     }
                 });
-            }
+            };
+
             setTimeout(() => updateControl(0));
+
             return () => {
                 canceled = true;
                 if (renderTarget === 'ZIP') {
-
-                    zip.generateAsync({type: 'blob'}).then(o =>
-                        FileSaver.saveAs(o, partCount === 0 ? 'HMSR-Render.zip' : `HMSR-Render-part${partCount}.zip`)
-                    )
+                    zip.generateAsync({ type: 'blob' }).then(b =>
+                        FileSaver.saveAs(b, partCount === 0 ? 'Miku-Render.zip' : `Miku-Render-part${partCount}.zip`)
+                    );
                 } else {
-
-                    ag.getBlobGIF(o =>
-                        FileSaver.saveAs(o, partCount === 0 ? 'HMSR-Render.gif' : `HMSR-Render-part${partCount}.gif`))
+                    ag.getBlobGIF(b =>
+                        FileSaver.saveAs(b, partCount === 0 ? 'Miku-Render.gif' : `Miku-Render-part${partCount}.gif`)
+                    );
                 }
-            }
+            };
         }
-    }, [playType]);
+    }, [playType, playSpeed, keyMapping, activeVirtualKeys, config, renderScale, renderFps, renderTarget, renderEnd, togglePlayType]);
 
-    // Recording Control
+    // 录制逻辑
     useEffect(() => {
         if (playType === -1) {
-            const {mouseX, mouseY, timestamp, keyInput} = control;
-            if (timestamp === undefined) return; // control is not from real input
-            setRecord(record => {
-                    if (!record[layer]) record[layer] = {a: []};
-                    const i = record[layer].a.length - 1;
-                    const con = {
-                        mouseX: latestMouseDown.current ? mouseX : undefined,
-                        mouseY: latestMouseDown.current ? mouseY : undefined,
-                        keyInput: keyInput?.length ? keyInput : undefined
-                    }
-                    const t = Math.max(timestamp - playTypeChangeTime.current, 0) * playSpeed + editorTimestampOnPlay.current;
-                    // if (isNaN(t)) debugger;
-                    if (
-                        i > 0 &&
-                        (con.mouseX === record[layer].a[i].c.mouseX) &&
-                        (con.mouseX === record[layer].a[i - 1].c.mouseX) &&
-                        (con.mouseY === record[layer].a[i].c.mouseY) &&
-                        (con.mouseY === record[layer].a[i - 1].c.mouseY) &&
-                        (record[layer].a[i].c.keyInput?.join('||') === record[layer].a[i - 1].c.keyInput?.join('||'))
-                    ) record[layer].a[i] = {
-                        t,
-                        c: con,
-                    };
-                    else
-                        record[layer].a.push({
-                            t,
-                            c: con,
-                        });
-                    return [...record];
+            const { mouseX, mouseY, timestamp: ts, keyInput } = control;
+            if (ts === undefined) return;
+
+            setRecord(prev => {
+                const nextRecord = [...prev];
+                if (!nextRecord[layer]) nextRecord[layer] = { a: [] };
+                const i = nextRecord[layer].a.length - 1;
+                const con = {
+                    mouseX: latestMouseDown.current ? mouseX : undefined,
+                    mouseY: latestMouseDown.current ? mouseY : undefined,
+                    keyInput: keyInput?.length ? keyInput : undefined
+                };
+                const t = Math.max(ts - playTypeChangeTime.current, 0) * playSpeed + editorTimestampOnPlay.current;
+
+                if (
+                    i > 0 &&
+                    (con.mouseX === nextRecord[layer].a[i].c.mouseX) &&
+                    (con.mouseX === nextRecord[layer].a[i - 1].c.mouseX) &&
+                    (con.mouseY === nextRecord[layer].a[i].c.mouseY) &&
+                    (con.mouseY === nextRecord[layer].a[i - 1].c.mouseY) &&
+                    (nextRecord[layer].a[i].c.keyInput?.join('||') === nextRecord[layer].a[i - 1].c.keyInput?.join('||'))
+                ) {
+                    nextRecord[layer].a[i] = { t, c: con };
+                } else {
+                    nextRecord[layer].a.push({ t, c: con });
                 }
-            )
-            setEditorTimestamp((timestamp - playTypeChangeTime.current) * playSpeed + editorTimestampOnPlay.current);
+                return nextRecord;
+            });
+            setEditorTimestamp((ts - playTypeChangeTime.current) * playSpeed + editorTimestampOnPlay.current);
         }
     }, [control, layer, playSpeed, playType]);
 
     useEffect(() => {
         if (audioRef.current) audioRef.current.playbackRate = playSpeed;
-    }, [playSpeed])
+    }, [playSpeed]);
 
-    // Editor Timestamp to Control Data
+    // 时间轴游标更新到画面控制
     useEffect(() => {
-        if ((playType >= 0) && record?.length) {
+        if (playType >= 0 && record?.length) {
             const targetTime = editorTimestamp;
-            setControl(control => {
-                // console.log(timestamp-playTypeChangeTime);
+            setControl(prev => {
                 const newControl = getRawControl(record, targetTime);
-                if (newControl?.mouseX) latestMousePos.current = [newControl?.mouseX, newControl?.mouseY];
-                // console.log(newControl);
-                return config.parseControl({...control, ...newControl});
-                // setCurrentFrame(rawControlIndex);
-            })
+                if (newControl?.mouseX) latestMousePos.current = [newControl.mouseX, newControl.mouseY];
+                return config.parseControl({ ...prev, ...newControl });
+            });
             if (playType === 2) setTimestamp(editorTimestamp);
         }
-    }, [playType, editorTimestamp, record])
+    }, [playType, editorTimestamp, record, config]);
 
-    const handleMouseMove = useCallback((e, stageRect = stageRef.current?.getBoundingClientRect()) => {
-        if (e === undefined) {
-            if (playType === 2) {
-                setRecord(record => {
-                    for (let l of record) {
-                        for (let c of l.a) {
-                            if (c.selected) {
-                                delete c.c.mouseX;
-                                delete c.c.mouseY;
-                            }
-                        }
-                    }
-                    return [...record];
-                })
-            }
-            return;
-        }
+    // 处理移动和触控移动
+    const handleMouseMove = useCallback((pos) => {
+        if (!pos) return;
+        const { mouseX, mouseY } = pos;
+
         if (playType === 0 || playType === -1) {
-            if (!stageRect) return;
-            const mouseX = e.clientX - Math.floor(stageRect.x);
-            const mouseY = e.clientY - Math.floor(stageRect.y);
-            //setControl(getControl(mouseX,mouseY));
             latestMousePos.current = [mouseX, mouseY];
-        }
-        if (playType === 2 && e.buttons) {
-            if (!stageRect) return;
-            const mouseX = e.clientX - Math.floor(stageRect.x);
-            const mouseY = e.clientY - Math.floor(stageRect.y);
-            //setControl(getControl(mouseX,mouseY));
+        } else if (playType === 2 && latestMouseDown.current) {
             latestMousePos.current = [mouseX, mouseY];
-            setRecord(record => {
-                for (let l of record) {
+            setRecord(prev => {
+                for (let l of prev) {
                     for (let c of l.a) {
                         if (c.selected) {
                             c.c.mouseX = mouseX;
@@ -1569,125 +751,146 @@ function App() {
                         }
                     }
                 }
-                return [...record];
-            })
+                return [...prev];
+            });
         }
-    }, [playType])
+    }, [playType]);
 
-    // if (control.timestamp === undefined) debugger;
+    // 陀螺仪控制配置
+    useEffect(() => {
+        if (mouseControlType === 1) {
+            dmListener = (e) => {
+                const gamma = e.gamma || 0; // 左右倾斜 -90 ~ 90
+                const beta = e.beta || 0;   // 前后倾斜 -180 ~ 180
+                const mouseX = Math.max(0, Math.min(W, (gamma / 45) * 300 + 400));
+                const mouseY = Math.max(0, Math.min(H, ((-beta + 45) / 45) * 250 + 300));
+                latestMousePos.current = [mouseX, mouseY];
+            };
+            window.addEventListener("deviceorientation", dmListener);
+        } else {
+            if (dmListener) window.removeEventListener("deviceorientation", dmListener);
+            dmListener = undefined;
+        }
+        return () => {
+            if (dmListener) window.removeEventListener("deviceorientation", dmListener);
+        };
+    }, [mouseControlType]);
 
-    const controlTypePanel = useMemo(() => <ToggleButtonGroup
-        className={'control-type'}
-        value={mouseControlType}
-        exclusive
-        onChange={(e, v) => {
-            if (v === 1) {
-                requestDeviceMotion((ret) => {
-                    if (!ret) {
-                        setMouseControlType(1);
-                        dmListener = (e) => {
-                            handleMouseMove({
-                                clientX: e.gamma / 50 * 400 + 400,
-                                clientY: -e.beta / 50 * 300 + 300
-                            }, {x: 0, y: 0})
+    const controlTypePanel = useMemo(() => (
+        <ToggleButtonGroup
+            size="small"
+            value={mouseControlType}
+            exclusive
+            onChange={(e, v) => {
+                if (v === 1) {
+                    requestDeviceMotion((err) => {
+                        if (!err) {
+                            setMouseControlType(1);
+                        } else {
+                            alert(err.message);
                         }
-                        window.addEventListener("deviceorientation", dmListener);
-                    } else alert(ret)
-                })
-            } else {
-                dmListener && window.removeEventListener("deviceorientation", dmListener);
-                dmListener = undefined;
-                setMouseControlType(0);
-            }
-        }}
-        label="Mouse Control"
-    >
-        <ToggleButton value={0} aria-label="Touch">
-            Touch
-        </ToggleButton>
-        <ToggleButton value={1} aria-label="Gyroscope">
-            Gyroscope
-        </ToggleButton>
-    </ToggleButtonGroup>, [handleMouseMove, mouseControlType])
-    return (<div className="App">
-        {!isPure && controlTypePanel}
-
-        <div
-            className="stage"
-            style={{width: W + 'px', height: H + 'px', backgroundColor: stageBackground}}
-            ref={stageRef}
-            onMouseMove={handleMouseMove}
-            onMouseDown={() => {
-                latestMouseDown.current = true
-            }}
-            onMouseUp={() => {
-                latestMouseDown.current = false
-            }}
-            onMouseLeave={() => {
-                latestMouseDown.current && handleMouseMove();
-                latestMouseDown.current = false
-            }}
-            onTouchStart={() => {
-                latestMouseDown.current = true
-            }}
-            onTouchEnd={() => {
-                latestMouseDown.current = false
-            }}
-            onTouchCancel={() => {
-                latestMouseDown.current = false
-            }}
-            onTouchMove={(e) => {
-                handleMouseMove(e.touches?.[0]);
+                    });
+                } else {
+                    setMouseControlType(0);
+                }
             }}
         >
-            {useMemo(() => stageBackground === false ? <div className='stage-transparent'
-                                                            data-html2canvas-ignore={true}/> : stageBackground.startsWith('#') ? null :
-                <img className='stage-background' src={stageBackground}/>, [stageBackground])}
-            {useMemo(() => <Miku control={control} timestamp={timestamp} model={config.model} runPhysics={runPhysics}
-                                 key={mikuResetter}/>, [config.model, control, mikuResetter, runPhysics, timestamp])}
-            {playType !== 1 && !isPure && <div className={'mouse'} data-html2canvas-ignore={true}
-                                               style={{left: control.mouseX + 'px', top: control.mouseY + 'px'}}/>}
-            {/*{playType===3?<div className='stage-debug'>{editorTimestamp}</div>:null}*/}
+            <ToggleButton value={0}>触控/鼠标跟随</ToggleButton>
+            <ToggleButton value={1}>手机陀螺仪/重力感应</ToggleButton>
+        </ToggleButtonGroup>
+    ), [mouseControlType]);
+
+    return (
+        <div className="App">
+            <Stage
+                control={control}
+                timestamp={timestamp}
+                config={config}
+                runPhysics={runPhysics}
+                setRunPhysics={setRunPhysics}
+                mikuResetter={mikuResetter}
+                stageBackground={stageBackground}
+                stageRef={stageRef}
+                isPure={isPure}
+                playType={playType}
+                fps={fps}
+                mouseControlType={mouseControlType}
+                setMouseControlType={setMouseControlType}
+                requestDeviceMotion={requestDeviceMotion}
+                onMouseMove={handleMouseMove}
+                latestMouseDown={latestMouseDown}
+                resetMiku={resetMiku}
+                uiMode={uiMode}
+                setUiMode={setUiMode}
+            />
+
+            {audioFile && (
+                <audio
+                    src={audioFile}
+                    ref={audioRef}
+                    onLoadedMetadata={() => {
+                        setRenderEnd(end => end === undefined ? audioRef.current.duration * 1000 : end);
+                        setRenderStart(start => start === undefined ? 0 : start);
+                        audioRef.current.playbackRate = playSpeed;
+                    }}
+                />
+            )}
+
+            {!isPure && (
+                <div className="bottom-workspace">
+                    {uiMode === 'pad' ? (
+                        <QuickPad
+                            activeKeys={activeVirtualKeys}
+                            onTriggerKey={handleTriggerKey}
+                            onApplyPreset={handleApplyPreset}
+                            onSetGaze={handleSetGaze}
+                            isBlinking={activeVirtualKeys.includes('EyeBlink')}
+                            onToggleBlink={handleToggleBlink}
+                            playType={playType}
+                            onResetMiku={resetMiku}
+                        />
+                    ) : (
+                        <Controls
+                            playType={playType}
+                            togglePlayType={togglePlayType}
+                            recordRef={recordRef}
+                            layer={layer}
+                            setEditorTimestamp={setEditorTimestamp}
+                            resetMiku={resetMiku}
+                            runPhysics={runPhysics}
+                            setRunPhysics={setRunPhysics}
+                            setAudioFile={setAudioFile}
+                            setRecord={setRecord}
+                            record={record}
+                            setLayer={setLayer}
+                            renderStart={renderStart}
+                            renderEnd={renderEnd}
+                            keyMapping={keyMapping}
+                            setKeyMapping={setKeyMapping}
+                            editorTimestamp={editorTimestamp}
+                            editorTimestampRef={editorTimestampRef}
+                            config={config}
+                            stageBackground={stageBackground}
+                            setStageBackground={setStageBackground}
+                            control={control}
+                            renderFps={renderFps}
+                            setRenderFps={setRenderFps}
+                            renderScale={renderScale}
+                            setRenderScale={setRenderScale}
+                            renderTarget={renderTarget}
+                            setRenderTarget={setRenderTarget}
+                            fpsTarget={fpsTarget}
+                            setFpsTarget={setFpsTarget}
+                            setConfig={setConfig}
+                            fps={fps}
+                            controlTypePanel={controlTypePanel}
+                            stageRef={stageRef}
+                            playSpeed={playSpeed}
+                            setPlaySpeed={setPlaySpeed}
+                        />
+                    )}
+                </div>
+            )}
         </div>
-        {!isPure && <div className='stage-bottom'/>}
-        {audioFile ? <audio src={audioFile} ref={audioRef} onLoadedMetadata={e => {
-            console.log(audioRef.current);
-            setRenderEnd(renderEnd => renderEnd === undefined ? audioRef.current.duration * 1000 : renderEnd);
-            setRenderStart(renderStart => renderStart === undefined ? 0 : renderStart);
-            audioRef.current.playbackRate = playSpeed;
-        }}/> : null}
-        {playType !== 2 && !isPure ? <div className='fps'>
-            <b>FPS: </b>{Math.round(fps)}
-        </div> : null}
-        {!isPure && <Controls {...{
-            playType,
-            togglePlayType,
-            recordRef,
-            layer,
-            setEditorTimestamp,
-            resetMiku,
-            runPhysics,
-            setRunPhysics,
-            setAudioFile,
-            setRecord,
-            record,
-            setLayer,
-            renderStart,
-            renderEnd,
-            keyMapping,
-            setKeyMapping,
-            editorTimestamp,
-            editorTimestampRef,
-            config,
-            stageBackground,
-            setStageBackground,
-            control,
-            renderFps, setRenderFps, renderScale, setRenderScale, renderTarget, setRenderTarget,
-            fpsTarget, setFpsTarget, setConfig, fps, controlTypePanel, stageRef, playSpeed, setPlaySpeed
-        }}/>}
-    </div>);
+    );
 }
-
-export default App;
-
-
