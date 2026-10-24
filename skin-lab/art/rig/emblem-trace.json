@@ -1,0 +1,22 @@
+{
+  "reference": "public/assets/whale-girl.png",
+  "sourceBox": [
+    475,
+    905,
+    100,
+    85
+  ],
+  "coordinateSpace": [
+    1254,
+    1254
+  ],
+  "epsilon": 0.55,
+  "loops": 4,
+  "points": [
+    24,
+    26,
+    162,
+    7
+  ],
+  "embeddedRaster": false
+}

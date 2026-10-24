@@ -72,7 +72,7 @@ export default function TimeLine({
     const handleTimelineMouse = useCallback(e => {
         if (!timelineRef.current) return;
         const { x, width } = timelineRef.current.getBoundingClientRect();
-        const clientX = e.clientX || e.touches?.[0]?.clientX;
+        const clientX = e.clientX ?? e.touches?.[0]?.clientX;
         if (clientX === undefined) return;
         setEditorTimestamp(Math.max(l2t(100 * (clientX - x) / width), 0));
     }, [l2t, setEditorTimestamp]);

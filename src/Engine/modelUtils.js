@@ -1,5 +1,16 @@
+// Opt-in indexes: normal/imported models keep their existing dynamic lookup behavior.
+const modelIndexes=new WeakMap();
+export function registerModelIndex(root){
+ if(modelIndexes.has(root))return;
+ const nodes=Object.create(null),chains=Object.create(null);
+ function walk(node,path,parents){nodes[path]=node;const chain=[...parents,node];chains[path]=chain;node.components?.forEach(child=>walk(child,path?path+'.'+child.id:child.id,chain));}
+ walk(root,'',[]);modelIndexes.set(root,{nodes,chains,reading:false,absolute:new Map()});
+}
+export function beginModelRead(root){const index=modelIndexes.get(root);if(index){index.reading=true;index.absolute.clear();}}
+export function endModelRead(root){const index=modelIndexes.get(root);if(index){index.reading=false;index.absolute.clear();}}
 
 export const getConfig = (config, path) => {
+    const index=modelIndexes.get(config);if(index&&path)return index.nodes[path];
     let pathList = path.split('.');
     let currentConfig = config;
     while (currentConfig && pathList.length) {
@@ -31,6 +42,15 @@ export const toAbsolute = (x0, y0, absPos) => {
 }
 
 export const getAbsolutePos = (config, path) => {
+    const index=modelIndexes.get(config);
+    if(index){
+        if(index.reading&&index.absolute.has(path))return index.absolute.get(path);
+        const chain=index.chains[path];if(!chain)return undefined;
+        for(let i=0;i<chain.length;i++)if(typeof chain[i].x==='function'||typeof chain[i].y==='function'||(i<chain.length-1&&typeof chain[i].rotation==='function'))return undefined;
+        let x0=0,y0=0,rotation0=0;
+        for(let i=chain.length-1;i>0;i--){const n=chain[i];x0+=n.x;y0+=n.y;rotation0+=isNaN(+n.rotation)?0:+n.rotation;const p=rotateVec(x0,y0,chain[i-1].rotation||0);x0=p.x;y0=p.y;}
+        const value={x:x0,y:y0,rotation:rotation0};if(index.reading)index.absolute.set(path,value);return value;
+    }
     let pathList = path.split('.');
     let currentConfig = config;
     let revList = [];

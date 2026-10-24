@@ -1,3 +1,4 @@
+import {saveCanvas} from '../../platform/toy';
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import {
     Box, Tab, Tabs, ToggleButton, ToggleButtonGroup, Button
@@ -6,7 +7,7 @@ import Camera from "@mui/icons-material/Camera";
 import Videocam from "@mui/icons-material/Videocam";
 import Save from "@mui/icons-material/Save";
 import FileOpen from "@mui/icons-material/FileOpen";
-import html2canvas from "html2canvas";
+import html2canvas from "../../Miku/captureStage";
 import FileSaver from 'file-saver';
 import TimeLineButtons from './TimeLineButtons';
 import TimeLine from './TimeLine';
@@ -65,6 +66,8 @@ export default function Controls({
     setLayer,
     renderStart,
     renderEnd,
+    setRenderStart,
+    setRenderEnd,
     keyMapping,
     setKeyMapping,
     editorTimestamp,
@@ -86,7 +89,9 @@ export default function Controls({
     controlTypePanel,
     stageRef,
     playSpeed,
-    setPlaySpeed
+    setPlaySpeed,
+    currentSkinId = 'miku',
+    onSwitchSkin
 }) {
     const controlsRef = useRef();
     const [tabPage, setTabPage] = useState(0);
@@ -205,10 +210,8 @@ export default function Controls({
                                     backgroundColor: null,
                                     scale: renderScale
                                 }).then((canvas) => {
-                                    canvas.toBlob((blob) => {
-                                        FileSaver.saveAs(blob, 'Miku-Snapshot.png');
-                                    });
-                                });
+                                    return saveCanvas(canvas);
+                                }).catch(error => alert(error?.message || '截图保存失败，请重试')); 
                             }}
                         >
                             <Camera style={{ marginRight: 4, fontSize: 18 }} /> 截图当前帧
@@ -224,7 +227,7 @@ export default function Controls({
                         onChange={(e, v) => {
                             if (playType !== 3 && v) {
                                 setRenderTarget(v);
-                                togglePlayType(3, renderStart);
+                                togglePlayType(3, renderStart || 0);
                             } else {
                                 togglePlayType(2);
                             }
@@ -257,6 +260,7 @@ export default function Controls({
                                 let renderControl = config.parseControl(getRawControl(record, renderStart || 0));
                                 let renderPhysics = getInitPhysics(parseConfig(config.model, renderControl));
                                 let renderStates = [];
+                                const secondary = config.createSecondaryMotion?.({diagnostics:false});
                                 const effectiveEnd = renderEnd || 5000;
                                 const effectiveStart = renderStart || 0;
                                 const totFrame = Math.floor((effectiveEnd - effectiveStart) * renderFps / 1000);
@@ -272,7 +276,13 @@ export default function Controls({
                                         renderControl,
                                         renderPhysics,
                                         p => { renderPhysics = p; },
-                                        r => renderStates.push(frame === 0 ? r : deepDiff(renderStates[0], r)),
+                                        r => {
+                                            secondary?.step(r, frame === 0 ? 0 : 1000 / renderFps, runPhysics);
+                                            // Copy now: the solver reuses and mutates mesh buffers each frame.
+                                            const snapshot = JSON.parse(JSON.stringify(r));
+                                            renderStates.push(frame === 0 ? snapshot : deepDiff(renderStates[0], snapshot));
+                                        },
+                                        runPhysics,
                                     );
                                     if (performance.now() - lastReport > 100) {
                                         lastReport = performance.now();
@@ -325,6 +335,8 @@ export default function Controls({
 
                     &nbsp;
 
+                    <label>起点（秒）<input aria-label="导出起点秒" type="number" min="0" step="0.1" disabled={playType === 3} value={(renderStart || 0) / 1000} onChange={e => setRenderStart(Math.max(0, Math.min(Number(e.target.value) * 1000, (renderEnd || 5000) - 100)))} style={{width:70}} /></label>
+                    <label>终点（秒）<input aria-label="导出终点秒" type="number" min="0.1" step="0.1" disabled={playType === 3} value={(renderEnd || 5000) / 1000} onChange={e => setRenderEnd(Math.max((renderStart || 0) + 100, Number(e.target.value) * 1000))} style={{width:70}} /></label>
                     <div className='timedisplay' style={{ width: 'auto', marginLeft: 12 }}>
                         <b className='rendertime' />
                         {playType === 3 && (
@@ -388,6 +400,21 @@ export default function Controls({
             {/* TAB 5: 系统设置 */}
             {tabPage === 5 && (
                 <div className='controls-panel controls-panel-control'>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ fontSize: 13, color: '#555' }}>角色皮肤：</span>
+                        <ToggleButtonGroup
+                            size="small"
+                            value={currentSkinId}
+                            exclusive
+                            onChange={(e, v) => v && onSwitchSkin && onSwitchSkin(v)}
+                        >
+                            <ToggleButton value="miku">🎵 经典初音</ToggleButton>
+                            <ToggleButton value="whale">🐳 大肥鱼</ToggleButton>
+                        </ToggleButtonGroup>
+                    </div>
+
+                    &nbsp;&nbsp;
+
                     <Button
                         size="small"
                         variant="outlined"

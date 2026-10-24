@@ -1,3 +1,4 @@
+import LiveMesh from './MeshCanvas';
 export default function Part({renderState}) {
     if (!renderState) return null;
     const {
@@ -6,6 +7,7 @@ export default function Part({renderState}) {
         y,
         components,
         resource,
+        mesh,
         resourceCenterX,
         resourceCenterY,
         rotation,
@@ -31,7 +33,7 @@ export default function Part({renderState}) {
         ,
         ...others,
     }}>
-        {resource ? <img src={resource} style={{
+        {mesh ? <LiveMesh mesh={mesh} width={width} height={height} resourceCenterX={resourceCenterX} resourceCenterY={resourceCenterY}/> : resource ? <img draggable={false} src={resource} style={{
             position: 'absolute',
             transform: `translate(${-resourceCenterX}px,${-resourceCenterY}px)`,
             width: width + 'px',

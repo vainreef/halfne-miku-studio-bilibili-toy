@@ -1,0 +1,199 @@
+{
+  "source": "public/assets/whale-girl.png",
+  "scope": "front garments only; rear hair untouched",
+  "report": [
+    {
+      "name": "apron-outline",
+      "loops": 1,
+      "points": [
+        98
+      ]
+    },
+    {
+      "name": "apron-folds",
+      "loops": 2,
+      "points": [
+        23,
+        14
+      ]
+    },
+    {
+      "name": "waist-navy",
+      "loops": 1,
+      "points": [
+        21
+      ]
+    },
+    {
+      "name": "waist-buttons",
+      "loops": 4,
+      "points": [
+        8,
+        8,
+        8,
+        8
+      ]
+    },
+    {
+      "name": "left-frill",
+      "loops": 1,
+      "points": [
+        31
+      ]
+    },
+    {
+      "name": "left-frill-shadow",
+      "loops": 1,
+      "points": [
+        11
+      ]
+    },
+    {
+      "name": "right-frill",
+      "loops": 1,
+      "points": [
+        30
+      ]
+    },
+    {
+      "name": "right-frill-shadow",
+      "loops": 3,
+      "points": [
+        12,
+        5,
+        6
+      ]
+    },
+    {
+      "name": "collar-edge",
+      "loops": 3,
+      "points": [
+        20,
+        19,
+        5
+      ]
+    },
+    {
+      "name": "collar-fold",
+      "loops": 2,
+      "points": [
+        21,
+        20
+      ]
+    },
+    {
+      "name": "bib-buttons",
+      "loops": 4,
+      "points": [
+        8,
+        5,
+        7,
+        7
+      ]
+    },
+    {
+      "name": "bow-outline",
+      "loops": 6,
+      "points": [
+        26,
+        23,
+        5,
+        7,
+        8,
+        8
+      ]
+    },
+    {
+      "name": "bow-blue-pin",
+      "loops": 1,
+      "points": [
+        9
+      ]
+    },
+    {
+      "name": "bow-leaf",
+      "loops": 1,
+      "points": [
+        7
+      ]
+    },
+    {
+      "name": "bow-carrot",
+      "loops": 1,
+      "points": [
+        9
+      ]
+    },
+    {
+      "name": "apron-back-tie",
+      "loops": 4,
+      "points": [
+        17,
+        5,
+        7,
+        9
+      ]
+    },
+    {
+      "name": "apron-back-tie-shade",
+      "loops": 3,
+      "points": [
+        17,
+        7,
+        9
+      ]
+    },
+    {
+      "name": "skirt-gold-bow",
+      "loops": 3,
+      "points": [
+        43,
+        8,
+        10
+      ]
+    },
+    {
+      "name": "sleeve-left-fold-shadow",
+      "loops": 3,
+      "points": [
+        7,
+        6,
+        8
+      ]
+    },
+    {
+      "name": "sleeve-right-fold-shadow",
+      "loops": 3,
+      "points": [
+        5,
+        5,
+        11
+      ]
+    },
+    {
+      "name": "forearm-left-fold-shadow",
+      "loops": 2,
+      "points": [
+        6,
+        5
+      ]
+    },
+    {
+      "name": "forearm-right-fold-shadow",
+      "loops": 1,
+      "points": [
+        8
+      ]
+    },
+    {
+      "name": "left-palm-shade",
+      "loops": 0,
+      "points": []
+    },
+    {
+      "name": "right-palm-shade",
+      "loops": 0,
+      "points": []
+    }
+  ]
+}

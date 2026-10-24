@@ -1,0 +1,30 @@
+{
+  "source": "public/assets/whale-girl.png",
+  "scope": "neck + collar only; skin and collar remain independent nodes",
+  "report": [
+    {
+      "name": "neck-visible",
+      "loops": 1,
+      "points": [
+        18
+      ]
+    },
+    {
+      "name": "collar-continuous",
+      "loops": 3,
+      "points": [
+        28,
+        25,
+        5
+      ]
+    },
+    {
+      "name": "collar-lavender-fold",
+      "loops": 2,
+      "points": [
+        29,
+        28
+      ]
+    }
+  ]
+}

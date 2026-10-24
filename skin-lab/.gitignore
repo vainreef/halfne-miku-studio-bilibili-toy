@@ -1,0 +1,6 @@
+node_modules/
+dist/
+screenshots/*.png
+screenshots/*report.json
+
+screenshots/

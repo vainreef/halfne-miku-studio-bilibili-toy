@@ -1,0 +1,78 @@
+{
+  "source": "public/assets/whale-girl.png",
+  "coordinateSpace": [
+    1254,
+    1254
+  ],
+  "embeddedRaster": false,
+  "independentBangs": true,
+  "report": [
+    {
+      "name": "bangs-left-contour",
+      "loops": 1,
+      "points": [
+        60
+      ]
+    },
+    {
+      "name": "bangs-left-highlight",
+      "loops": 3,
+      "points": [
+        29,
+        7,
+        12
+      ]
+    },
+    {
+      "name": "bangs-center-contour",
+      "loops": 1,
+      "points": [
+        57
+      ]
+    },
+    {
+      "name": "bangs-center-highlight",
+      "loops": 1,
+      "points": [
+        22
+      ]
+    },
+    {
+      "name": "bangs-right-contour",
+      "loops": 1,
+      "points": [
+        42
+      ]
+    },
+    {
+      "name": "bangs-right-highlight",
+      "loops": 0,
+      "points": []
+    },
+    {
+      "name": "lace-fan",
+      "loops": 1,
+      "points": [
+        115
+      ]
+    },
+    {
+      "name": "lace-folds",
+      "loops": 12,
+      "points": [
+        12,
+        12,
+        9,
+        4,
+        6,
+        6,
+        11,
+        6,
+        6,
+        7,
+        11,
+        9
+      ]
+    }
+  ]
+}

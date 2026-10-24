@@ -1,0 +1,46 @@
+{
+  "source": "public/assets/whale-girl.png",
+  "coordinateSpace": [
+    1254,
+    1254
+  ],
+  "embeddedRaster": false,
+  "separatePalms": true,
+  "report": [
+    {
+      "name": "sleeve-left-reference-edge",
+      "loops": 1,
+      "points": [
+        26
+      ]
+    },
+    {
+      "name": "sleeve-right-reference-edge",
+      "loops": 1,
+      "points": [
+        28
+      ]
+    },
+    {
+      "name": "forearm-left-reference-edge",
+      "loops": 1,
+      "points": [
+        15
+      ]
+    },
+    {
+      "name": "forearm-right-reference-edge",
+      "loops": 1,
+      "points": [
+        21
+      ]
+    },
+    {
+      "name": "right-cuff",
+      "loops": 1,
+      "points": [
+        10
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { validateRecording } from '../../Engine/recording';
 import React, { useMemo } from 'react';
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import FiberManualRecord from "@mui/icons-material/FiberManualRecord";
@@ -150,9 +151,7 @@ export default function TimeLineButtons({
                                     const fr = new FileReader();
                                     fr.onload = () => {
                                         try {
-                                            let _record = JSON.parse(fr.result);
-                                            _record = _record.map(o => Array.isArray(o) ? { a: o } : o);
-                                            setRecord(_record);
+                                            setRecord(validateRecording(JSON.parse(fr.result)));
                                         } catch (err) {
                                             alert("动作文件解析失败: " + err.message);
                                         }

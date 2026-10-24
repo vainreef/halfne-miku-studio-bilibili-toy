@@ -1,0 +1,1328 @@
+{
+  "master": {
+    "origin": [
+      540,
+      1220
+    ],
+    "scale": 0.22,
+    "rigOrigin": [
+      400,
+      540
+    ]
+  },
+  "nodes": [
+    {
+      "path": "",
+      "id": "root",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "anchor": [
+        400,
+        540
+      ],
+      "physics": {}
+    },
+    {
+      "path": "whaleTail",
+      "id": "whaleTail",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        42.9,
+        -53.9
+      ],
+      "anchor": [
+        442.9,
+        486.1
+      ],
+      "physics": {
+        "massX": 0,
+        "massY": 60,
+        "gravityX": 0,
+        "gravityY": 0.003,
+        "damp": 0.006,
+        "rotationMin": -15,
+        "rotationMax": 15
+      }
+    },
+    {
+      "path": "clipBR",
+      "id": "clipBR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        69.2,
+        -196.35
+      ],
+      "anchor": [
+        469.2,
+        343.65
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairBackCenter",
+      "id": "hairBackCenter",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "tailL",
+      "id": "tailL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -41.8,
+        -202.39999999999998
+      ],
+      "anchor": [
+        358.2,
+        337.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "tailR",
+      "id": "tailR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        57.2,
+        -202.39999999999998
+      ],
+      "anchor": [
+        457.2,
+        337.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "feetL",
+      "id": "feetL",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -24.2,
+        -5.5
+      ],
+      "anchor": [
+        375.8,
+        534.5
+      ],
+      "physics": {}
+    },
+    {
+      "path": "feetR",
+      "id": "feetR",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        37.4,
+        -5.5
+      ],
+      "anchor": [
+        437.4,
+        534.5
+      ],
+      "physics": {}
+    },
+    {
+      "path": "legL",
+      "id": "legL",
+      "virtual": false,
+      "matrix": [
+        0.9927337820337083,
+        0.12033136751923723,
+        -0.12033136751923723,
+        0.9927337820337083,
+        -19.8,
+        -41.8
+      ],
+      "anchor": [
+        380.2,
+        498.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "legR",
+      "id": "legR",
+      "virtual": false,
+      "matrix": [
+        0.9718501056887048,
+        -0.23560002562150414,
+        0.23560002562150414,
+        0.9718501056887048,
+        28.6,
+        -41.8
+      ],
+      "anchor": [
+        428.6,
+        498.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairOuterL",
+      "id": "hairOuterL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairOuterR",
+      "id": "hairOuterR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairInnerL",
+      "id": "hairInnerL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairInnerR",
+      "id": "hairInnerR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairScalp",
+      "id": "hairScalp",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairFlyL",
+      "id": "hairFlyL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairFlyR",
+      "id": "hairFlyR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairUnderL",
+      "id": "hairUnderL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -45.54,
+        -147.4
+      ],
+      "anchor": [
+        354.46,
+        392.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "hairUnderR",
+      "id": "hairUnderR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        56.54,
+        -147.4
+      ],
+      "anchor": [
+        456.54,
+        392.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower",
+      "id": "lower",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -88
+      ],
+      "anchor": [
+        400,
+        452
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.whaleTailRoot",
+      "id": "whaleTailRoot",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        42.9,
+        -53.9
+      ],
+      "anchor": [
+        442.9,
+        486.1
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.markL",
+      "id": "markL",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -19.8,
+        -41.8
+      ],
+      "anchor": [
+        380.2,
+        498.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.markR",
+      "id": "markR",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        28.6,
+        -41.8
+      ],
+      "anchor": [
+        428.6,
+        498.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.skirt",
+      "id": "skirt",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -88
+      ],
+      "anchor": [
+        400,
+        452
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.belt",
+      "id": "belt",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        20,
+        -77.35
+      ],
+      "anchor": [
+        420,
+        462.65
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.skirtBow",
+      "id": "skirtBow",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        33.88,
+        -62.7
+      ],
+      "anchor": [
+        433.88,
+        477.3
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.handL",
+      "id": "handL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -88
+      ],
+      "anchor": [
+        400,
+        452
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.handR",
+      "id": "handR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -88
+      ],
+      "anchor": [
+        400,
+        452
+      ],
+      "physics": {}
+    },
+    {
+      "path": "lower.apron",
+      "id": "apron",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -88
+      ],
+      "anchor": [
+        400,
+        452
+      ],
+      "physics": {}
+    },
+    {
+      "path": "upper",
+      "id": "upper",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -90.2
+      ],
+      "anchor": [
+        400,
+        449.8
+      ],
+      "physics": {}
+    },
+    {
+      "path": "upper.shirtL",
+      "id": "shirtL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -8.65,
+        -101.55
+      ],
+      "anchor": [
+        391.35,
+        438.45
+      ],
+      "physics": {}
+    },
+    {
+      "path": "upper.shirtR",
+      "id": "shirtR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        6.6,
+        -97.4
+      ],
+      "anchor": [
+        406.6,
+        442.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "shoulderL",
+      "id": "shoulderL",
+      "virtual": false,
+      "matrix": [
+        0.8369494337782357,
+        0.5472802255684839,
+        -0.5472802255684839,
+        0.8369494337782357,
+        -19.8,
+        -107.60000000000001
+      ],
+      "anchor": [
+        380.2,
+        432.4
+      ],
+      "physics": {}
+    },
+    {
+      "path": "shoulderR",
+      "id": "shoulderR",
+      "virtual": false,
+      "matrix": [
+        0.8857006087778112,
+        -0.4642568595191832,
+        0.4642568595191832,
+        0.8857006087778112,
+        27.7,
+        -107.60000000000001
+      ],
+      "anchor": [
+        427.7,
+        432.4
+      ],
+      "physics": {}
+    },
+    {
+      "path": "uppercollar",
+      "id": "uppercollar",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -90.2
+      ],
+      "anchor": [
+        400,
+        449.8
+      ],
+      "physics": {}
+    },
+    {
+      "path": "uppercollar.collar",
+      "id": "collar",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -0.25,
+        -110
+      ],
+      "anchor": [
+        399.75,
+        430
+      ],
+      "physics": {}
+    },
+    {
+      "path": "uppercollar.collar.markL",
+      "id": "markL",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -19.8,
+        -107.6
+      ],
+      "anchor": [
+        380.2,
+        432.4
+      ],
+      "physics": {}
+    },
+    {
+      "path": "uppercollar.collar.markR",
+      "id": "markR",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        27.7,
+        -107.6
+      ],
+      "anchor": [
+        427.7,
+        432.4
+      ],
+      "physics": {}
+    },
+    {
+      "path": "uppercollar.collar.neck",
+      "id": "neck",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        1.9500000000000002,
+        -116.39999999999999
+      ],
+      "anchor": [
+        401.95,
+        423.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "uppercollar.collar.tie",
+      "id": "tie",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -109.34
+      ],
+      "anchor": [
+        400,
+        430.65999999999997
+      ],
+      "physics": {}
+    },
+    {
+      "path": "uppercollar.collar.collar",
+      "id": "collar",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -0.25,
+        -110
+      ],
+      "anchor": [
+        399.75,
+        430
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head",
+      "id": "head",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.tailL",
+      "id": "tailL",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -41.8,
+        -202.39999999999998
+      ],
+      "anchor": [
+        358.2,
+        337.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.tailR",
+      "id": "tailR",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        57.2,
+        -202.39999999999998
+      ],
+      "anchor": [
+        457.2,
+        337.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.phoneL",
+      "id": "phoneL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -55,
+        -162.8
+      ],
+      "anchor": [
+        345,
+        377.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.clipBL",
+      "id": "clipBL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -47.05,
+        -204.85
+      ],
+      "anchor": [
+        352.95,
+        335.15
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.clipFL",
+      "id": "clipFL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -48.4,
+        -202.2
+      ],
+      "anchor": [
+        351.6,
+        337.8
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.mic",
+      "id": "mic",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -46.85,
+        -122.8
+      ],
+      "anchor": [
+        353.15,
+        417.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.hairCap",
+      "id": "hairCap",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -118.8
+      ],
+      "anchor": [
+        400,
+        421.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.base",
+      "id": "base",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -57.35,
+        -229.64999999999998
+      ],
+      "anchor": [
+        342.65,
+        310.35
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.face",
+      "id": "face",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -5.65,
+        -141.7
+      ],
+      "anchor": [
+        394.35,
+        398.3
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.face.eyes",
+      "id": "eyes",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -5.15,
+        -148.6
+      ],
+      "anchor": [
+        394.85,
+        391.4
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.face.facered",
+      "id": "facered",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -4.95,
+        -128.89999999999998
+      ],
+      "anchor": [
+        395.05,
+        411.1
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.face.mouth",
+      "id": "mouth",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -5.45,
+        -122.94999999999999
+      ],
+      "anchor": [
+        394.55,
+        417.05
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.clipBR",
+      "id": "clipBR",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        69.2,
+        -196.35
+      ],
+      "anchor": [
+        469.2,
+        343.65
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.clipFR",
+      "id": "clipFR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        67.8,
+        -193.75
+      ],
+      "anchor": [
+        467.8,
+        346.25
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.ahoge",
+      "id": "ahoge",
+      "virtual": false,
+      "matrix": [
+        0.7071067811865474,
+        -0.7071067811865477,
+        0.7071067811865476,
+        0.7071067811865472,
+        9.46,
+        -228.58
+      ],
+      "anchor": [
+        409.46,
+        311.41999999999996
+      ],
+      "physics": {
+        "massX": 0,
+        "massY": -32,
+        "gravityX": -0.012,
+        "gravityY": -0.012
+      }
+    },
+    {
+      "path": "head.phoneR",
+      "id": "phoneR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        68.2,
+        -162.8
+      ],
+      "anchor": [
+        468.2,
+        377.2
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.momiL",
+      "id": "momiL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -45.8,
+        -202.39999999999998
+      ],
+      "anchor": [
+        354.2,
+        337.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.momiR",
+      "id": "momiR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        44.2,
+        -202.39999999999998
+      ],
+      "anchor": [
+        444.2,
+        337.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.bangs",
+      "id": "bangs",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -4.7,
+        -215.2
+      ],
+      "anchor": [
+        395.3,
+        324.8
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.bangs.L",
+      "id": "L",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -18.25,
+        -216.5
+      ],
+      "anchor": [
+        381.75,
+        323.5
+      ],
+      "physics": {
+        "massX": 0,
+        "massY": 128,
+        "gravityX": 0,
+        "gravityY": 0.064,
+        "damp": 0.015,
+        "rotationMin": -7,
+        "rotationMax": 7
+      }
+    },
+    {
+      "path": "head.bangs.M",
+      "id": "M",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        2.8,
+        -216.89999999999998
+      ],
+      "anchor": [
+        402.8,
+        323.1
+      ],
+      "physics": {
+        "massX": 0,
+        "massY": 100,
+        "gravityX": 0,
+        "gravityY": 0.064,
+        "damp": 0.015
+      }
+    },
+    {
+      "path": "head.bangs.R",
+      "id": "R",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        29.650000000000002,
+        -215.2
+      ],
+      "anchor": [
+        429.65,
+        324.8
+      ],
+      "physics": {
+        "massX": 0,
+        "massY": 128,
+        "gravityX": 0,
+        "gravityY": 0.064,
+        "damp": 0.015,
+        "rotationMin": -7,
+        "rotationMax": 7
+      }
+    },
+    {
+      "path": "head.headDress",
+      "id": "headDress",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        -220
+      ],
+      "anchor": [
+        400,
+        320
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.underHairRootL",
+      "id": "underHairRootL",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -45.54,
+        -147.4
+      ],
+      "anchor": [
+        354.46,
+        392.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "head.underHairRootR",
+      "id": "underHairRootR",
+      "virtual": true,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        56.54,
+        -147.4
+      ],
+      "anchor": [
+        456.54,
+        392.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "armL",
+      "id": "armL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -31.89712769302102,
+        -89.1
+      ],
+      "anchor": [
+        368.10287230697895,
+        450.9
+      ],
+      "physics": {}
+    },
+    {
+      "path": "armR",
+      "id": "armR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        37.39712769302102,
+        -89.1
+      ],
+      "anchor": [
+        437.39712769302105,
+        450.9
+      ],
+      "physics": {}
+    },
+    {
+      "path": "frontLockL",
+      "id": "frontLockL",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        -45.8,
+        -202.39999999999998
+      ],
+      "anchor": [
+        354.2,
+        337.6
+      ],
+      "physics": {}
+    },
+    {
+      "path": "frontLockR",
+      "id": "frontLockR",
+      "virtual": false,
+      "matrix": [
+        1,
+        0,
+        0,
+        1,
+        44.2,
+        -202.39999999999998
+      ],
+      "anchor": [
+        444.2,
+        337.6
+      ],
+      "physics": {}
+    }
+  ]
+}

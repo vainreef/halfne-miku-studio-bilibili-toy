@@ -1,0 +1,214 @@
+{
+  "source": "public/assets/whale-girl.png",
+  "coordinateSpace": [
+    1254,
+    1254
+  ],
+  "embeddedRaster": false,
+  "report": [
+    {
+      "name": "left-leg-skin",
+      "box": [
+        367,
+        1025,
+        150,
+        220
+      ],
+      "loops": 1,
+      "points": [
+        15
+      ]
+    },
+    {
+      "name": "left-leg-shadow",
+      "box": [
+        367,
+        1025,
+        150,
+        220
+      ],
+      "loops": 1,
+      "points": [
+        17
+      ]
+    },
+    {
+      "name": "left-shoe",
+      "box": [
+        367,
+        1025,
+        150,
+        220
+      ],
+      "loops": 2,
+      "points": [
+        25,
+        15
+      ]
+    },
+    {
+      "name": "left-sock",
+      "box": [
+        367,
+        1025,
+        150,
+        220
+      ],
+      "loops": 3,
+      "points": [
+        28,
+        16,
+        4
+      ]
+    },
+    {
+      "name": "left-sock-fold",
+      "box": [
+        367,
+        1025,
+        150,
+        220
+      ],
+      "loops": 1,
+      "points": [
+        25
+      ]
+    },
+    {
+      "name": "right-leg-skin",
+      "box": [
+        610,
+        1020,
+        165,
+        225
+      ],
+      "loops": 1,
+      "points": [
+        16
+      ]
+    },
+    {
+      "name": "right-leg-shadow",
+      "box": [
+        610,
+        1020,
+        165,
+        225
+      ],
+      "loops": 1,
+      "points": [
+        14
+      ]
+    },
+    {
+      "name": "right-shoe",
+      "box": [
+        610,
+        1020,
+        165,
+        225
+      ],
+      "loops": 2,
+      "points": [
+        24,
+        14
+      ]
+    },
+    {
+      "name": "right-sock",
+      "box": [
+        610,
+        1020,
+        165,
+        225
+      ],
+      "loops": 3,
+      "points": [
+        31,
+        16,
+        4
+      ]
+    },
+    {
+      "name": "right-sock-fold",
+      "box": [
+        610,
+        1020,
+        165,
+        225
+      ],
+      "loops": 1,
+      "points": [
+        22
+      ]
+    },
+    {
+      "name": "left-cuff",
+      "box": [
+        408,
+        812,
+        75,
+        70
+      ],
+      "loops": 1,
+      "points": [
+        14
+      ]
+    },
+    {
+      "name": "left-hand",
+      "box": [
+        408,
+        812,
+        75,
+        70
+      ],
+      "loops": 1,
+      "points": [
+        13
+      ]
+    },
+    {
+      "name": "right-cuff",
+      "box": [
+        612,
+        810,
+        85,
+        78
+      ],
+      "loops": 1,
+      "points": [
+        26
+      ]
+    },
+    {
+      "name": "right-hand",
+      "box": [
+        612,
+        810,
+        85,
+        78
+      ],
+      "loops": 1,
+      "points": [
+        14
+      ]
+    },
+    {
+      "name": "whale-emblem",
+      "box": [
+        475,
+        905,
+        100,
+        85
+      ],
+      "loops": 4,
+      "points": [
+        8,
+        8,
+        41,
+        4
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+import http from 'node:http';import fs from 'node:fs/promises';import path from 'node:path';import {chromium} from '../skin-lab/node_modules/playwright/index.mjs';
+const roots={before:path.resolve(process.env.BEFORE_BUILD_DIR||'release/baselines/0.3.0'),after:path.resolve('build-toy')};
+const server=http.createServer(async(req,res)=>{try{const u=new URL(req.url,'http://local'),prefix=u.pathname.split('/')[1],root=roots[prefix];if(!root)throw Error();const file=path.resolve(root,'.'+decodeURIComponent(u.pathname.slice(prefix.length+1)));if(!file.startsWith(root+path.sep))throw Error();res.setHeader('Content-Type',({'.html':'text/html','.js':'application/javascript','.css':'text/css','.png':'image/png','.json':'application/json'})[path.extname(file)]||'application/octet-stream');res.end(await fs.readFile(file));}catch{res.writeHead(404).end()}});await new Promise(r=>server.listen(3036,'127.0.0.1',r));
+const b=await chromium.launch({channel:'chrome',headless:true}),report={environment:'Desktop Chrome mobile viewport 390×844 DPR3; CPU throttling proxy, not physical phone results',baseline:'release/baselines/0.3.0 (previous GPU release)',results:[]};
+try{
+ for(const rate of [20,30])for(let trial=0;trial<3;trial++)for(const variant of (trial%2?['after','before']:['before','after'])){
+  const c=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});await c.route('**/toy-sdk.js',r=>r.abort());
+  await c.addInitScript(()=>{window.__draws=0;window.__drawTimes=[];const original=WebGLRenderingContext.prototype.drawArrays;WebGLRenderingContext.prototype.drawArrays=function(...args){window.__draws++;window.__drawTimes.push(performance.now());return original.apply(this,args)}});
+  const p=await c.newPage();await p.goto(`http://127.0.0.1:3036/${variant}/index.html?skin=whale&renderer=gpu`,{waitUntil:'networkidle'});await p.waitForSelector('canvas[data-renderer=webgl][data-ready="1"]');
+  const session=await c.newCDPSession(p);await session.send('Emulation.setCPUThrottlingRate',{rate});await session.send('Performance.enable');await p.waitForTimeout(1200);
+  const before=(await session.send('Performance.getMetrics')).metrics;
+  const sample=await p.evaluate(()=>new Promise(resolve=>{const stage=document.querySelector('.stage'),rect=stage.getBoundingClientRect(),gaps=[];let start,last,draws;function frame(t){if(start===undefined){start=last=t;draws=window.__draws;}else{gaps.push(t-last);last=t;}stage.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+rect.width*(.5+.3*Math.sin((t-start)/600)),clientY:rect.top+rect.height*(.5+.25*Math.cos((t-start)/430))}));if(t-start<5000)requestAnimationFrame(frame);else resolve({gaps,draws:window.__draws-draws,duration:t-start,drawTimes:window.__drawTimes.slice(draws)});}requestAnimationFrame(frame)}));
+  const after=(await session.send('Performance.getMetrics')).metrics,delta=k=>(after.find(m=>m.name===k).value-before.find(m=>m.name===k).value)*1000;
+  sample.gaps.sort((a,b)=>a-b);const drawGaps=sample.drawTimes.slice(1).map((t,i)=>t-sample.drawTimes[i]).sort((a,b)=>a-b);const row={variant,cpuRate:rate,trial,rafFps:+(sample.gaps.length*1000/sample.duration).toFixed(2),renderedFps:+(sample.draws*1000/sample.duration).toFixed(2),p95Ms:drawGaps[Math.floor(drawGaps.length*.95)],rafP95Ms:sample.gaps[Math.floor(sample.gaps.length*.95)],scriptMs:+delta('ScriptDuration').toFixed(1),layoutMs:+delta('LayoutDuration').toFixed(1)};
+  report.results.push(row);console.log(row);await c.close();
+ }
+ const median=a=>[...a].sort((x,y)=>x-y)[Math.floor(a.length/2)];
+ report.medians=[20,30].map(rate=>{const before=report.results.filter(r=>r.cpuRate===rate&&r.variant==='before'),after=report.results.filter(r=>r.cpuRate===rate&&r.variant==='after');return {cpuRate:rate,before:median(before.map(r=>r.renderedFps)),after:median(after.map(r=>r.renderedFps)),beforeP95Ms:median(before.map(r=>r.p95Ms)),afterP95Ms:median(after.map(r=>r.p95Ms))}});
+ await fs.writeFile('release/toy/runtime-performance.json',JSON.stringify(report,null,2));console.log(report.medians);
+}finally{await b.close();await new Promise(r=>server.close(r))}

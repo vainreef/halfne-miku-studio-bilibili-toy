@@ -1,6 +1,6 @@
 {
   "name": "halfne-miku-studio-bilibili-toy",
-  "version": "0.2.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "description": "半音未来舞台演播室 - 哔哩哔哩玩具版 (Halfne Miku Studio - Bilibili Toy)",
@@ -30,6 +30,16 @@
     "dev": "vite",
     "preview:model": "node scripts/preview-model.js",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "build:toy": "vite build --mode toy",
+    "package:toy": "npm run build:toy && node scripts/package-toy.mjs",
+    "dev:toy": "vite --mode toy --port 3020",
+    "verify:toy": "npm run build:toy && node scripts/verify-toy.mjs",
+    "release": "node scripts/build-release.mjs",
+    "verify:mobile": "node scripts/verify-mobile-gpu.mjs",
+    "benchmark:mobile": "node scripts/benchmark-mobile.mjs",
+    "verify:runtime": "node scripts/verify-runtime.mjs",
+    "benchmark:runtime": "node scripts/benchmark-runtime.mjs",
+    "verify:unified": "node scripts/verify-unified-rendering.mjs"
   }
 }

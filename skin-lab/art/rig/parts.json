@@ -1,0 +1,2888 @@
+[
+  {
+    "id": "whale-tail",
+    "node": "whaleTail",
+    "state": null,
+    "file": "generated/whale-tail.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      238.3,
+      85.50000000000003
+    ],
+    "restAnchor": [
+      442.9,
+      486.1
+    ]
+  },
+  {
+    "id": "rear-central-curtain",
+    "node": "hairBackCenter",
+    "state": null,
+    "file": "generated/rear-central-curtain.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "rear-outer-left",
+    "node": "hairOuterL",
+    "state": null,
+    "file": "generated/rear-outer-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "rear-outer-right",
+    "node": "hairOuterR",
+    "state": null,
+    "file": "generated/rear-outer-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "rear-under-left",
+    "node": "hairInnerL",
+    "state": null,
+    "file": "generated/rear-under-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "rear-under-right",
+    "node": "hairInnerR",
+    "state": null,
+    "file": "generated/rear-under-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "rear-scalp",
+    "node": "hairScalp",
+    "state": null,
+    "file": "generated/rear-scalp.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "rear-flyaways-left",
+    "node": "hairFlyL",
+    "state": null,
+    "file": "generated/rear-flyaways-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "rear-flyaways-right",
+    "node": "hairFlyR",
+    "state": null,
+    "file": "generated/rear-flyaways-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      150.40000000000003
+    ],
+    "restAnchor": [
+      400,
+      421.2
+    ]
+  },
+  {
+    "id": "leg-left",
+    "node": "legL",
+    "state": null,
+    "file": "generated/leg-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.21840143204741583,
+      -0.026472900854232193,
+      0.026472900854232193,
+      0.21840143204741583,
+      274.4522676988037,
+      86.95933037556617
+    ],
+    "restAnchor": [
+      380.2,
+      498.2
+    ]
+  },
+  {
+    "id": "leg-right",
+    "node": "legR",
+    "state": null,
+    "file": "generated/leg-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.21380702325151504,
+      0.05183200563673091,
+      -0.05183200563673091,
+      0.21380702325151504,
+      310.13626022731773,
+      45.05132227432978
+    ],
+    "restAnchor": [
+      428.6,
+      498.2
+    ]
+  },
+  {
+    "id": "skirt-apron",
+    "node": "lower.skirt",
+    "state": null,
+    "file": "generated/skirt-apron.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      119.60000000000002
+    ],
+    "restAnchor": [
+      400,
+      452
+    ]
+  },
+  {
+    "id": "palm-left",
+    "node": "lower.handL",
+    "state": null,
+    "file": "generated/palm-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      119.60000000000002
+    ],
+    "restAnchor": [
+      400,
+      452
+    ]
+  },
+  {
+    "id": "palm-right",
+    "node": "lower.handR",
+    "state": null,
+    "file": "generated/palm-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      119.60000000000002
+    ],
+    "restAnchor": [
+      400,
+      452
+    ]
+  },
+  {
+    "id": "apron",
+    "node": "lower.apron",
+    "state": null,
+    "file": "generated/apron.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      119.60000000000002
+    ],
+    "restAnchor": [
+      400,
+      452
+    ]
+  },
+  {
+    "id": "waist-ribbon",
+    "node": "lower.belt",
+    "state": null,
+    "file": "generated/waist-ribbon.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      261.2,
+      108.95000000000002
+    ],
+    "restAnchor": [
+      420,
+      462.65
+    ]
+  },
+  {
+    "id": "skirt-side-bow",
+    "node": "lower.skirtBow",
+    "state": null,
+    "file": "generated/skirt-side-bow.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      247.32,
+      94.30000000000001
+    ],
+    "restAnchor": [
+      433.88,
+      477.3
+    ]
+  },
+  {
+    "id": "bodice",
+    "node": "upper",
+    "state": null,
+    "file": "generated/bodice.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      121.80000000000001
+    ],
+    "restAnchor": [
+      400,
+      449.8
+    ]
+  },
+  {
+    "id": "bodice-frill-left",
+    "node": "upper.shirtL",
+    "state": null,
+    "file": "generated/bodice-frill-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      289.85,
+      133.15000000000003
+    ],
+    "restAnchor": [
+      391.35,
+      438.45
+    ]
+  },
+  {
+    "id": "bodice-frill-right",
+    "node": "upper.shirtR",
+    "state": null,
+    "file": "generated/bodice-frill-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      274.6,
+      129.00000000000003
+    ],
+    "restAnchor": [
+      406.6,
+      442.6
+    ]
+  },
+  {
+    "id": "sleeve-left",
+    "node": "shoulderL",
+    "state": null,
+    "file": "generated/sleeve-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.18412887543121187,
+      -0.12040164962506646,
+      0.12040164962506646,
+      0.18412887543121187,
+      229.1393457845425,
+      219.59927337973966
+    ],
+    "restAnchor": [
+      380.2,
+      432.4
+    ]
+  },
+  {
+    "id": "sleeve-right",
+    "node": "shoulderR",
+    "state": null,
+    "file": "generated/sleeve-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.19485413393111847,
+      0.10213650909422031,
+      -0.10213650909422031,
+      0.19485413393111847,
+      344.8973638247353,
+      89.56571218896767
+    ],
+    "restAnchor": [
+      427.7,
+      432.4
+    ]
+  },
+  {
+    "id": "neck",
+    "node": "uppercollar.collar.neck",
+    "state": null,
+    "file": "generated/neck.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      279.25,
+      148
+    ],
+    "restAnchor": [
+      401.95,
+      423.6
+    ]
+  },
+  {
+    "id": "collar",
+    "node": "uppercollar.collar.collar",
+    "state": null,
+    "file": "generated/collar.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.45,
+      141.60000000000002
+    ],
+    "restAnchor": [
+      399.75,
+      430
+    ]
+  },
+  {
+    "id": "chest-bow",
+    "node": "uppercollar.collar.tie",
+    "state": null,
+    "file": "generated/chest-bow.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      140.94000000000003
+    ],
+    "restAnchor": [
+      400,
+      430.65999999999997
+    ]
+  },
+  {
+    "id": "head-fin-left",
+    "node": "head.phoneL",
+    "state": null,
+    "file": "generated/head-fin-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      336.2,
+      194.40000000000003
+    ],
+    "restAnchor": [
+      345,
+      377.2
+    ]
+  },
+  {
+    "id": "head-fin-right",
+    "node": "head.phoneR",
+    "state": null,
+    "file": "generated/head-fin-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      213,
+      194.40000000000003
+    ],
+    "restAnchor": [
+      468.2,
+      377.2
+    ]
+  },
+  {
+    "id": "head-base",
+    "node": "head.base",
+    "state": null,
+    "file": "generated/head-base.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      338.55,
+      261.25
+    ],
+    "restAnchor": [
+      342.65,
+      310.35
+    ]
+  },
+  {
+    "id": "blush",
+    "node": "head.face.facered",
+    "state": null,
+    "file": "generated/blush.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.15,
+      160.5
+    ],
+    "restAnchor": [
+      395.05,
+      411.1
+    ]
+  },
+  {
+    "id": "side-lock-left",
+    "node": "head.momiL",
+    "state": null,
+    "file": "generated/side-lock-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      327,
+      234
+    ],
+    "restAnchor": [
+      354.2,
+      337.6
+    ]
+  },
+  {
+    "id": "side-lock-right",
+    "node": "head.momiR",
+    "state": null,
+    "file": "generated/side-lock-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      237,
+      234
+    ],
+    "restAnchor": [
+      444.2,
+      337.6
+    ]
+  },
+  {
+    "id": "bangs-left",
+    "node": "head.bangs.L",
+    "state": null,
+    "file": "generated/bangs-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      299.45,
+      248.10000000000002
+    ],
+    "restAnchor": [
+      381.75,
+      323.5
+    ]
+  },
+  {
+    "id": "bangs-center",
+    "node": "head.bangs.M",
+    "state": null,
+    "file": "generated/bangs-center.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      278.4,
+      248.5
+    ],
+    "restAnchor": [
+      402.8,
+      323.1
+    ]
+  },
+  {
+    "id": "bangs-right",
+    "node": "head.bangs.R",
+    "state": null,
+    "file": "generated/bangs-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      251.55,
+      246.8
+    ],
+    "restAnchor": [
+      429.65,
+      324.8
+    ]
+  },
+  {
+    "id": "maid-headdress",
+    "node": "head.headDress",
+    "state": null,
+    "file": "generated/maid-headdress.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      281.2,
+      251.60000000000002
+    ],
+    "restAnchor": [
+      400,
+      320
+    ]
+  },
+  {
+    "id": "ahoge",
+    "node": "head.ahoge",
+    "state": null,
+    "file": "generated/ahoge.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.15556349186104043,
+      0.15556349186104051,
+      -0.1555634918610405,
+      0.15556349186104043,
+      337.46347627186174,
+      181.14949221816505
+    ],
+    "restAnchor": [
+      409.46,
+      311.41999999999996
+    ]
+  },
+  {
+    "id": "blue-hair-bow",
+    "node": "head.clipFR",
+    "state": null,
+    "file": "generated/blue-hair-bow.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      213.4,
+      225.35000000000002
+    ],
+    "restAnchor": [
+      467.8,
+      346.25
+    ]
+  },
+  {
+    "id": "forearm-left",
+    "node": "armL",
+    "state": null,
+    "file": "generated/forearm-left.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      313.09712769302104,
+      120.70000000000002
+    ],
+    "restAnchor": [
+      368.10287230697895,
+      450.9
+    ]
+  },
+  {
+    "id": "forearm-right",
+    "node": "armR",
+    "state": null,
+    "file": "generated/forearm-right.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      243.802872306979,
+      120.70000000000002
+    ],
+    "restAnchor": [
+      437.39712769302105,
+      450.9
+    ]
+  },
+  {
+    "id": "eyes-happyo",
+    "node": "head.face.eyes",
+    "state": "happyo",
+    "file": "generated/eyes-happyo.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-happyc",
+    "node": "head.face.eyes",
+    "state": "happyc",
+    "file": "generated/eyes-happyc.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-jadedo",
+    "node": "head.face.eyes",
+    "state": "jadedo",
+    "file": "generated/eyes-jadedo.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-jadedc",
+    "node": "head.face.eyes",
+    "state": "jadedc",
+    "file": "generated/eyes-jadedc.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-ooo",
+    "node": "head.face.eyes",
+    "state": "ooo",
+    "file": "generated/eyes-ooo.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-ooc",
+    "node": "head.face.eyes",
+    "state": "ooc",
+    "file": "generated/eyes-ooc.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-xxo",
+    "node": "head.face.eyes",
+    "state": "xxo",
+    "file": "generated/eyes-xxo.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-xxc",
+    "node": "head.face.eyes",
+    "state": "xxc",
+    "file": "generated/eyes-xxc.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-aao",
+    "node": "head.face.eyes",
+    "state": "aao",
+    "file": "generated/eyes-aao.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-aac",
+    "node": "head.face.eyes",
+    "state": "aac",
+    "file": "generated/eyes-aac.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-sideglanceo",
+    "node": "head.face.eyes",
+    "state": "sideglanceo",
+    "file": "generated/eyes-sideglanceo.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-sideglancec",
+    "node": "head.face.eyes",
+    "state": "sideglancec",
+    "file": "generated/eyes-sideglancec.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-eheho",
+    "node": "head.face.eyes",
+    "state": "eheho",
+    "file": "generated/eyes-eheho.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-ehehc",
+    "node": "head.face.eyes",
+    "state": "ehehc",
+    "file": "generated/eyes-ehehc.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-pumpedo",
+    "node": "head.face.eyes",
+    "state": "pumpedo",
+    "file": "generated/eyes-pumpedo.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "eyes-pumpedc",
+    "node": "head.face.eyes",
+    "state": "pumpedc",
+    "file": "generated/eyes-pumpedc.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.35,
+      180.20000000000002
+    ],
+    "restAnchor": [
+      394.85,
+      391.4
+    ]
+  },
+  {
+    "id": "mouth-happy1",
+    "node": "head.face.mouth",
+    "state": "happy1",
+    "file": "generated/mouth-happy1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-happy2",
+    "node": "head.face.mouth",
+    "state": "happy2",
+    "file": "generated/mouth-happy2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-happy3",
+    "node": "head.face.mouth",
+    "state": "happy3",
+    "file": "generated/mouth-happy3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-happy4",
+    "node": "head.face.mouth",
+    "state": "happy4",
+    "file": "generated/mouth-happy4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-happy5",
+    "node": "head.face.mouth",
+    "state": "happy5",
+    "file": "generated/mouth-happy5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-happy6",
+    "node": "head.face.mouth",
+    "state": "happy6",
+    "file": "generated/mouth-happy6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-happy7",
+    "node": "head.face.mouth",
+    "state": "happy7",
+    "file": "generated/mouth-happy7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-neutral1",
+    "node": "head.face.mouth",
+    "state": "neutral1",
+    "file": "generated/mouth-neutral1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-neutral2",
+    "node": "head.face.mouth",
+    "state": "neutral2",
+    "file": "generated/mouth-neutral2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-neutral3",
+    "node": "head.face.mouth",
+    "state": "neutral3",
+    "file": "generated/mouth-neutral3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-neutral4",
+    "node": "head.face.mouth",
+    "state": "neutral4",
+    "file": "generated/mouth-neutral4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-neutral5",
+    "node": "head.face.mouth",
+    "state": "neutral5",
+    "file": "generated/mouth-neutral5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-neutral6",
+    "node": "head.face.mouth",
+    "state": "neutral6",
+    "file": "generated/mouth-neutral6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-neutral7",
+    "node": "head.face.mouth",
+    "state": "neutral7",
+    "file": "generated/mouth-neutral7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-cat1",
+    "node": "head.face.mouth",
+    "state": "cat1",
+    "file": "generated/mouth-cat1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-cat2",
+    "node": "head.face.mouth",
+    "state": "cat2",
+    "file": "generated/mouth-cat2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-cat3",
+    "node": "head.face.mouth",
+    "state": "cat3",
+    "file": "generated/mouth-cat3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-cat4",
+    "node": "head.face.mouth",
+    "state": "cat4",
+    "file": "generated/mouth-cat4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-cat5",
+    "node": "head.face.mouth",
+    "state": "cat5",
+    "file": "generated/mouth-cat5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-cat6",
+    "node": "head.face.mouth",
+    "state": "cat6",
+    "file": "generated/mouth-cat6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-cat7",
+    "node": "head.face.mouth",
+    "state": "cat7",
+    "file": "generated/mouth-cat7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-angry1",
+    "node": "head.face.mouth",
+    "state": "angry1",
+    "file": "generated/mouth-angry1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-angry2",
+    "node": "head.face.mouth",
+    "state": "angry2",
+    "file": "generated/mouth-angry2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-angry3",
+    "node": "head.face.mouth",
+    "state": "angry3",
+    "file": "generated/mouth-angry3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-angry4",
+    "node": "head.face.mouth",
+    "state": "angry4",
+    "file": "generated/mouth-angry4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-angry5",
+    "node": "head.face.mouth",
+    "state": "angry5",
+    "file": "generated/mouth-angry5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-angry6",
+    "node": "head.face.mouth",
+    "state": "angry6",
+    "file": "generated/mouth-angry6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-angry7",
+    "node": "head.face.mouth",
+    "state": "angry7",
+    "file": "generated/mouth-angry7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-pout1",
+    "node": "head.face.mouth",
+    "state": "pout1",
+    "file": "generated/mouth-pout1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-pout2",
+    "node": "head.face.mouth",
+    "state": "pout2",
+    "file": "generated/mouth-pout2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-pout3",
+    "node": "head.face.mouth",
+    "state": "pout3",
+    "file": "generated/mouth-pout3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-pout4",
+    "node": "head.face.mouth",
+    "state": "pout4",
+    "file": "generated/mouth-pout4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-pout5",
+    "node": "head.face.mouth",
+    "state": "pout5",
+    "file": "generated/mouth-pout5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-pout6",
+    "node": "head.face.mouth",
+    "state": "pout6",
+    "file": "generated/mouth-pout6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-pout7",
+    "node": "head.face.mouth",
+    "state": "pout7",
+    "file": "generated/mouth-pout7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-drool1",
+    "node": "head.face.mouth",
+    "state": "drool1",
+    "file": "generated/mouth-drool1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-drool2",
+    "node": "head.face.mouth",
+    "state": "drool2",
+    "file": "generated/mouth-drool2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-drool3",
+    "node": "head.face.mouth",
+    "state": "drool3",
+    "file": "generated/mouth-drool3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-drool4",
+    "node": "head.face.mouth",
+    "state": "drool4",
+    "file": "generated/mouth-drool4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-drool5",
+    "node": "head.face.mouth",
+    "state": "drool5",
+    "file": "generated/mouth-drool5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-drool6",
+    "node": "head.face.mouth",
+    "state": "drool6",
+    "file": "generated/mouth-drool6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-drool7",
+    "node": "head.face.mouth",
+    "state": "drool7",
+    "file": "generated/mouth-drool7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-duck1",
+    "node": "head.face.mouth",
+    "state": "duck1",
+    "file": "generated/mouth-duck1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-duck2",
+    "node": "head.face.mouth",
+    "state": "duck2",
+    "file": "generated/mouth-duck2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-duck3",
+    "node": "head.face.mouth",
+    "state": "duck3",
+    "file": "generated/mouth-duck3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-duck4",
+    "node": "head.face.mouth",
+    "state": "duck4",
+    "file": "generated/mouth-duck4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-duck5",
+    "node": "head.face.mouth",
+    "state": "duck5",
+    "file": "generated/mouth-duck5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-duck6",
+    "node": "head.face.mouth",
+    "state": "duck6",
+    "file": "generated/mouth-duck6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-duck7",
+    "node": "head.face.mouth",
+    "state": "duck7",
+    "file": "generated/mouth-duck7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-tongue1",
+    "node": "head.face.mouth",
+    "state": "tongue1",
+    "file": "generated/mouth-tongue1.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-tongue2",
+    "node": "head.face.mouth",
+    "state": "tongue2",
+    "file": "generated/mouth-tongue2.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-tongue3",
+    "node": "head.face.mouth",
+    "state": "tongue3",
+    "file": "generated/mouth-tongue3.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-tongue4",
+    "node": "head.face.mouth",
+    "state": "tongue4",
+    "file": "generated/mouth-tongue4.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-tongue5",
+    "node": "head.face.mouth",
+    "state": "tongue5",
+    "file": "generated/mouth-tongue5.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-tongue6",
+    "node": "head.face.mouth",
+    "state": "tongue6",
+    "file": "generated/mouth-tongue6.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  },
+  {
+    "id": "mouth-tongue7",
+    "node": "head.face.mouth",
+    "state": "tongue7",
+    "file": "generated/mouth-tongue7.svg",
+    "resourceCenter": [
+      400,
+      300
+    ],
+    "resourceSize": [
+      800,
+      600
+    ],
+    "exportMatrix": [
+      0.22,
+      0,
+      0,
+      0.22,
+      286.65,
+      154.55
+    ],
+    "restAnchor": [
+      394.55,
+      417.05
+    ]
+  }
+]

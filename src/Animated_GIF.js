@@ -35,6 +35,7 @@ function Animated_GIF(options) {
     var sampleInterval;
     var workers = [], availableWorkers = [], numWorkers;
     var generatingGIF = false;
+    var eager = !!options.eager, finalizing = false;
 
     // Palette validation
     if (palette) {
@@ -82,8 +83,11 @@ function Animated_GIF(options) {
 
     function startRendering(completeCallback) {
         onRenderCompleteCallback = completeCallback;
-        for (var i = 0; i < numWorkers && i < frames.length; i++) {
-            processFrame(i);
+        finalizing = true;
+        if (frames.length && frames.every(frame => frame.done)) {
+            generateGIF(frames, onRenderCompleteCallback);
+        } else {
+            while (processNextFrame()) {}
         }
     }
 
@@ -100,17 +104,18 @@ function Animated_GIF(options) {
         worker.onmessage = function (ev) {
             var data = ev.data;
             delete frame.data;
-            frame.pixels = Array.prototype.slice.call(data.pixels);
+            frame.pixels = data.pixels; // Keep compact indexed bytes instead of boxed JS numbers.
             frame.palette = Array.prototype.slice.call(data.palette);
             frame.done = true;
             frame.beingProcessed = false;
             freeWorker(worker);
             onFrameFinished();
         };
-        worker.postMessage(frame);
+        worker.postMessage(frame, [frame.data.buffer]);
     }
 
     function processNextFrame() {
+        if (!availableWorkers.length) return false;
         var position = -1;
         for (var i = 0; i < frames.length; i++) {
             if (!frames[i].done && !frames[i].beingProcessed) {
@@ -118,7 +123,8 @@ function Animated_GIF(options) {
                 break;
             }
         }
-        if (position >= 0) processFrame(position);
+        if (position >= 0) { processFrame(position); return true; }
+        return false;
     }
 
     function onFrameFinished() {
@@ -128,9 +134,9 @@ function Animated_GIF(options) {
         numRenderedFrames++;
         onRenderProgressCallback(numRenderedFrames * 0.75 / frames.length);
         if (allDone) {
-            if (!generatingGIF) generateGIF(frames, onRenderCompleteCallback);
+            if (finalizing && !generatingGIF) generateGIF(frames, onRenderCompleteCallback);
         } else {
-            setTimeout(processNextFrame, 1);
+            while (processNextFrame()) {}
         }
     }
 
@@ -144,13 +150,17 @@ function Animated_GIF(options) {
         }
         var gifWriter = new GifWriter(buffer, width, height, gifOptions);
         generatingGIF = true;
+        var elapsedDelay = 0, writtenDelay = 0;
         frames.forEach(function (frame) {
             var framePalette;
             if (!globalPalette) framePalette = frame.palette;
             onRenderProgressCallback(0.75 + 0.25 * frame.position * 1.0 / frames.length);
+            elapsedDelay += frame.delay;
+            var frameDelay = Math.max(1, Math.round(elapsedDelay) - writtenDelay);
+            writtenDelay += frameDelay;
             gifWriter.addFrame(0, 0, width, height, frame.pixels, {
                 palette: framePalette,
-                delay: frame.delay,
+                delay: frameDelay,
                 transparent: transparent ? frame.pixels[0] : undefined,
                 disposal: disposal,
             });
@@ -159,6 +169,7 @@ function Animated_GIF(options) {
         onRenderProgressCallback(1.0);
         frames = [];
         generatingGIF = false;
+        finalizing = false;
         callback(buffer);
     }
 
@@ -199,6 +210,8 @@ function Animated_GIF(options) {
             beingProcessed: false,
             position: frames.length,
         });
+        // Quantize while the next frame is being captured; discard RGBA buffers early.
+        if (eager) processNextFrame();
     };
 
     this.onRenderProgress = function (callback) { onRenderProgressCallback = callback; };

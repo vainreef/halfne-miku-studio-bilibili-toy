@@ -3,12 +3,14 @@ import react from '@vitejs/plugin-react';
 import { readFileSync } from 'fs';
 
 // 从 package.json 的 homepage 字段推导 GitHub Pages 子路径
-const homepage = JSON.parse(readFileSync('package.json', 'utf-8')).homepage || '';
+const metadata = JSON.parse(readFileSync('package.json', 'utf-8'));
+const homepage = metadata.homepage || '';
+const releaseID=process.env.HALFNE_RELEASE_ID || metadata.version;
 const base = homepage ? new URL(homepage).pathname.replace(/\/$/, '') + '/' : '/';
 
-export default defineConfig({
-  base,
-  plugins: [react()],
+export default defineConfig(({mode})=>({
+  base:mode==='toy'?'./':base,
+  plugins: [react(),{name:'release-version',transformIndexHtml(html){return html.replace('<head>',`<head>\n<meta name="halfne-version" content="${releaseID}">`)},generateBundle(){this.emitFile({type:'asset',fileName:'release.json',source:JSON.stringify({version:metadata.version,releaseID,variant:mode==='toy'?'toy':'web',mobileRenderer:'webgl-unified-hd-v2',resolutionPolicy:'native-screen-hd-tiles',animationRuntime:'compiled-v2',fpsSource:'render-commit'})})}},...(mode==='toy'?[{name:'toy-sdk-entry',transformIndexHtml(html){return html.replace('<html lang="zh-CN">','<html lang="zh-CN" data-toy-build="1">').replace('<head>','<head>\n<script async src="https://s1.hdslb.com/bfs/seed/toy/app/sdk/toy-sdk.js"></script>')}}]:[])],
   esbuild: {
     loader: 'jsx',
     include: /src\/.*\.jsx?$/,
@@ -27,8 +29,8 @@ export default defineConfig({
     allowedHosts: ['.cohub.live'],
   },
   build: {
-    outDir: 'build',
+    outDir: mode==='toy'?'build-toy':'build',
     sourcemap: false,
     chunkSizeWarningLimit: 1500,
   },
-});
+}));

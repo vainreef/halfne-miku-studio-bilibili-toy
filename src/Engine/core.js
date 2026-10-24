@@ -143,14 +143,14 @@ export const updatePhysics = (physics, root, dt) => {
     return newPhysics;
 }
 
-export const work = (dt, model, control, physics, setPhysics, setRenderState, runPhysics = true) => {
+export const work = (dt, model, control, physics, setPhysics, setRenderState, runPhysics = true, evaluate = parseConfig) => {
     const shouldResetPhysics = (dt > 200 || dt < 0 || !runPhysics);
     let _physics = physics;
     if (shouldResetPhysics) {
-        _physics = getInitPhysics(parseConfig(model, control), true);
+        _physics = getInitPhysics(evaluate(model, control), true);
         setPhysics(_physics);
     }
-    let currentRenderState = parseConfig(model, control, _physics);
+    let currentRenderState = evaluate(model, control, _physics);
     setRenderState(currentRenderState);
     if (dt !== 0 && !shouldResetPhysics)
         setPhysics(updatePhysics(physics, currentRenderState, dt))

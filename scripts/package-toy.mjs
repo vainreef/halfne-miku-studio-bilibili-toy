@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';import path from 'node:path';import JSZip from 'jszip';
+const build=path.resolve('build-toy'),out=path.resolve('release/toy');await fs.mkdir(out,{recursive:true});const zip=new JSZip();
+async function add(dir,prefix=''){for(const item of await fs.readdir(dir,{withFileTypes:true})){if(item.name.startsWith('.'))continue;const name=prefix+item.name;if(item.isDirectory())await add(path.join(dir,item.name),name+'/');else zip.file(name,await fs.readFile(path.join(dir,item.name)))}}
+await add(build);if(!zip.file('index.html'))throw Error('Missing root index.html');const data=await zip.generateAsync({type:'nodebuffer',compression:'DEFLATE',compressionOptions:{level:9}});if(data.length>50*1024*1024)throw Error('Toy ZIP exceeds 50 MB');const file=path.join(out,'halfne-bilibili-toy.zip');await fs.writeFile(file,data);console.log(`Toy ZIP: ${file} (${(data.length/1024/1024).toFixed(2)} MB)`);

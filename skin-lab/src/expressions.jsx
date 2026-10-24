@@ -1,0 +1,14 @@
+import React from 'react';import {createRoot} from 'react-dom/client';
+import classic from '../../src/defaultModel.js';import {getConfig} from '../../src/Engine/modelUtils.js';
+import resources from './whale/resources.js';import parts from '../art/rig/parts.json';
+const eyes=['happy','jaded','oo','xx','aa','sideglance','eheh','pumped'],mouths=['happy','neutral','cat','angry','pout','drool','duck','tongue'];
+const names={happy:'开心',jaded:'半睁',oo:'惊讶',xx:'星光',aa:'晕眩',sideglance:'侧视',eheh:'泪眼',pumped:'认真',neutral:'平静',cat:'猫嘴',angry:'生气',pout:'撇嘴',drool:'流口水',duck:'嘟嘴',tongue:'吐舌'};
+const style=`body{margin:0;padding:24px;background:#eef0f6;color:#243057;font:14px system-ui}h1{font-size:24px;margin:0 0 8px}p{margin:8px 0 22px}.grid{display:grid;grid-template-columns:repeat(4,minmax(210px,1fr));gap:12px}.card{background:white;border-radius:12px;overflow:hidden;border:1px solid #d9dce8}.pair{display:grid;grid-template-columns:1fr 1fr;background:#fddcc8}.pair svg{width:100%;height:112px}.caption{display:flex;justify-content:space-around;padding:6px;color:#778198;font-size:11px}.label{padding:8px 12px;display:flex;justify-content:space-between}a{color:#315bd0}h2{margin-top:28px}@media(max-width:700px){.grid{grid-template-columns:repeat(2,minmax(150px,1fr))}}`;
+function glyph(type,state,whale){
+ let url,box;
+ if(whale){url=resources[`head.face.${type}:${state}`];const p=parts.find(p=>p.node===`head.face.${type}`&&p.state===state),m=p.exportMatrix;const [x,y,w,h]=type==='eyes'?[345,410,370,210]:[455,567,135,150];box=[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5],m[0]*w,m[3]*h];}
+ else{url=getConfig(classic.model,`head.face.${type}`).resource(type==='eyes'?{eyeType:state.slice(0,-1),eyeOpen:state.at(-1)}:{mouthType:state.slice(0,-1),mouth:+state.at(-1)});box=type==='eyes'?[352,260,96,80]:[378,280,44,48];}
+ return <svg viewBox={box.join(' ')}><image href={url} width="800" height="600"/></svg>;
+}
+function card(type,t,suffix){const state=t+suffix;return <div className="card" data-state={state} key={state}><div className="label"><b>{names[t]} · {type==='eyes'?(suffix==='o'?'睁眼':'闭眼'):['','MM','AA','EE','OO','EH','OH','露齿'][suffix]}</b><a href={`/?clean=1&neutral=1&yaw=0&focus=face&${type==='eyes'?`eye=${t}&blink=${suffix==='c'?1:0}`:`mouth=${t}&phoneme=${suffix}`}`} target="_blank" rel="noreferrer">{state} ↗</a></div><div className="pair">{glyph(type,state,false)}{glyph(type,state,true)}</div><div className="caption"><span>初音原版</span><span>鲸鱼娘</span></div></div>}
+createRoot(document.getElementById('root')).render(<><style>{style}</style><h1>初音 / 鲸鱼娘 · 逐项表情对照</h1><p>16 个眼睛状态 + 56 个嘴型。每格左侧原版、右侧鲸鱼娘。点状态名查看中性姿态整脸；动作与物理保持冻结。</p><a href="/">返回皮肤工作台</a><h2>眼睛 · 8 × 睁闭</h2><div className="grid">{eyes.flatMap(t=>['o','c'].map(s=>card('eyes',t,s)))}</div><h2>嘴型 · 8 × 7</h2><div className="grid">{mouths.flatMap(t=>[1,2,3,4,5,6,7].map(s=>card('mouth',t,s)))}</div></>);

@@ -1,0 +1,5 @@
+{
+  "source": "src/defaultModel.js",
+  "sha256": "63151791832a61342f4e0cd59c0727a035600a0b8f541277324569590287eb42",
+  "policy": "Existing particle constants preserved. Geometry-only changes in rig.js."
+}

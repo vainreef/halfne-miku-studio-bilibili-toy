@@ -1,0 +1,26 @@
+{
+  "scenario": "0.5s rest; 2s constant waist velocity; stop and settle",
+  "before": {
+    "constantSpeedAt2s": -5.912833728763711,
+    "postStopMin": -5.912775277444057,
+    "postStopMax": 0.0003534404761173141,
+    "settled": {
+      "t": 7.983333333333333,
+      "hem": 8.427328032166395e-20,
+      "apron": 1.0425354587078541e-19
+    },
+    "maxTangentJump": 7.0402595742924845
+  },
+  "after": {
+    "constantSpeedAt2s": 0.004444684838603914,
+    "postStopMin": -0.20183050828668136,
+    "postStopMax": 1.2457214050956331,
+    "settled": {
+      "t": 7.983333333333333,
+      "hem": -3.9507290452457075e-11,
+      "apron": -1.1165773668149613e-11
+    },
+    "maxTangentJump": 0.000019663942696368508
+  },
+  "sample60vs120RmsSourcePx": 0.0010076351910390227
+}

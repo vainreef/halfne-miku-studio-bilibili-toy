@@ -1,0 +1,67 @@
+{
+  "source": "public/assets/whale-girl.png",
+  "referenceArtboard": [
+    1254,
+    1254
+  ],
+  "editableVectors": true,
+  "scope": "complete left/center/right fringe contours; preserve other artwork",
+  "report": [
+    {
+      "name": "bangs-left-complete-contour",
+      "loops": 1,
+      "points": [
+        46
+      ]
+    },
+    {
+      "name": "bangs-left-highlight",
+      "loops": 3,
+      "points": [
+        26,
+        5,
+        10
+      ]
+    },
+    {
+      "name": "bangs-center-complete-contour",
+      "loops": 1,
+      "points": [
+        43
+      ]
+    },
+    {
+      "name": "bangs-center-highlight",
+      "loops": 1,
+      "points": [
+        18
+      ]
+    },
+    {
+      "name": "bangs-right-complete-contour",
+      "loops": 1,
+      "points": [
+        64
+      ]
+    },
+    {
+      "name": "bangs-right-highlight",
+      "loops": 0,
+      "points": []
+    },
+    {
+      "name": "front-curl-left",
+      "loops": 1,
+      "points": [
+        77
+      ]
+    },
+    {
+      "name": "front-curl-right",
+      "loops": 1,
+      "points": [
+        49
+      ]
+    }
+  ]
+}

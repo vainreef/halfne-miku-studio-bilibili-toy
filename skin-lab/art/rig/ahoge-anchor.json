@@ -1,0 +1,15 @@
+{
+  "sourceAnchor": [
+    583,
+    181
+  ],
+  "node": "head.ahoge",
+  "resourceCenter": [
+    400,
+    300
+  ],
+  "shape": "cubic vector contour",
+  "outline": false,
+  "anchorIsSharpTip": true,
+  "points": 42
+}
