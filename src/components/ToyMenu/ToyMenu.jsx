@@ -22,7 +22,7 @@ export default function ToyMenu({panel,onClose,skin,onSwitchSkin,backgrounds,bac
       <div className="background-options">{[...Object.entries(backgrounds),['plain',null]].map(([id,src])=><button key={id} aria-label={BACKGROUND_NAMES[id]||'纯色背景'} aria-pressed={backgroundId===id} onClick={()=>onBackgroundChange(id)}>{src?<img src={src} alt="" loading="lazy"/>:<span className="plain-background"/>}<span>{(BACKGROUND_NAMES[id]||'纯色').split(' ')[0]}</span></button>)}</div>
      </div>
      <div className="menu-page" id="menu-settings" hidden={section!=='settings'}>
-      {[['gyroscope','陀螺仪感应',settings.gyroscope!==false],['physics','自然摆动',settings.physics!==false],['target','显示触摸点',settings.target===true]].map(([id,name,checked])=><label className="setting-row" key={id}><span>{name}</span><input type="checkbox" checked={checked} onChange={e=>{const val=e.target.checked;if(id==='gyroscope'&&val)requestGyroPermission().catch(()=>{});onSettingChange(id,val)}}/></label>)}
+      {[['bgm','背景音乐',settings.bgm!==false],['gyroscope','陀螺仪感应',settings.gyroscope!==false],['physics','自然摆动',settings.physics!==false],['target','显示触摸点',settings.target===true]].map(([id,name,checked])=><label className="setting-row" key={id}><span>{name}</span><input type="checkbox" checked={checked} onChange={e=>{const val=e.target.checked;if(id==='gyroscope'&&val)requestGyroPermission().catch(()=>{});onSettingChange(id,val)}}/></label>)}
       <div className="setting-row setting-row-mode">
         <span>触屏模式</span>
         <div className="touch-mode-options" role="radiogroup" aria-label="触屏控制模式">

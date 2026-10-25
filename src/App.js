@@ -4,6 +4,7 @@ import defaultConfig from './defaultModel';
 import whaleConfig from './whaleGirlModel';
 import {createFrameChannel} from './Engine/frameChannel';
 import {createGyroController,requestGyroPermission} from './Engine/gyroscope';
+import {bgm} from './Engine/bgm';
 import Stage from './components/Stage/Stage';
 import QuickPad from './components/QuickPad/QuickPad';
 import ToyMenu from './components/ToyMenu/ToyMenu';
@@ -21,7 +22,7 @@ function readSettings(){try{return JSON.parse(localStorage.getItem('halfne-toy-s
 export default function App(){
  const [skin,setSkin]=useState(initialSkin),config=skin==='whale'?whaleConfig:defaultConfig;
  const [settings,setSettings]=useState(readSettings);
- const runPhysics=settings.physics!==false,follow=settings.follow!==false,gyroEnabled=settings.gyroscope!==false;
+ const runPhysics=settings.physics!==false,follow=settings.follow!==false,gyroEnabled=settings.gyroscope!==false,bgmEnabled=settings.bgm!==false;
  const [keys,setKeys]=useState([]),[resetter,setResetter]=useState(0),[panel,setPanel]=useState(null);
  const backgrounds=defaultConfig.background;
  const [backgroundId,setBackgroundId]=useState(()=>{try{return localStorage.getItem('halfne-toy-background')||Object.keys(backgrounds)[0]}catch{return Object.keys(backgrounds)[0]}});
@@ -48,6 +49,12 @@ export default function App(){
   gyroController.current=controller;
   if(gyroEnabled)controller.enable();
   return()=>controller.destroy();
+ },[]);
+ useEffect(()=>{
+  bgm.setEnabled(bgmEnabled);
+ },[bgmEnabled]);
+ useEffect(()=>{
+  return ()=>bgm.destroy();
  },[]);
  useEffect(()=>{
   if(gyroEnabled)gyroController.current?.enable();
