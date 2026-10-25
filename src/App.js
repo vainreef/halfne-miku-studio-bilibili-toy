@@ -22,7 +22,7 @@ function readSettings(){try{return JSON.parse(localStorage.getItem('halfne-toy-s
 export default function App(){
  const [skin,setSkin]=useState(initialSkin),config=skin==='whale'?whaleConfig:defaultConfig;
  const [settings,setSettings]=useState(readSettings);
- const runPhysics=settings.physics!==false,follow=settings.follow!==false,gyroEnabled=settings.gyroscope!==false,bgmEnabled=settings.bgm!==false;
+ const runPhysics=settings.physics!==false,follow=settings.follow!==false,gyroEnabled=settings.gyroscope!==false,bgmEnabled=settings.bgm===true;
  const [keys,setKeys]=useState([]),[resetter,setResetter]=useState(0),[panel,setPanel]=useState(null);
  const backgrounds=defaultConfig.background;
  const [backgroundId,setBackgroundId]=useState(()=>{try{return localStorage.getItem('halfne-toy-background')||Object.keys(backgrounds)[0]}catch{return Object.keys(backgrounds)[0]}});

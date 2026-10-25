@@ -24,11 +24,10 @@ try {
 
     const bgmCheckbox = page.getByLabel('背景音乐', { exact: true });
     assert.equal(await bgmCheckbox.count(), 1, 'BGM checkbox must exist');
-    assert.equal(await bgmCheckbox.isChecked(), true, 'BGM must be checked by default');
+    assert.equal(await bgmCheckbox.isChecked(), false, 'BGM must be unchecked by default');
 
     // Check audio src in window
     const audioState = await page.evaluate(async () => {
-        // Find audio or test bgm instance
         const settings = JSON.parse(localStorage.getItem('halfne-toy-settings') || '{}');
         return {
             bgmSetting: settings.bgm
@@ -36,27 +35,27 @@ try {
     });
     console.log('Initial BGM setting:', audioState);
 
-    // Uncheck BGM
+    // Check BGM
+    await bgmCheckbox.check();
+    await page.waitForTimeout(200);
+    assert.equal(await bgmCheckbox.isChecked(), true, 'BGM should be checked');
+
+    const checkedState = await page.evaluate(() => {
+        const settings = JSON.parse(localStorage.getItem('halfne-toy-settings') || '{}');
+        return settings.bgm;
+    });
+    assert.equal(checkedState, true, 'localStorage should persist bgm: true');
+
+    // Re-uncheck BGM
     await bgmCheckbox.uncheck();
     await page.waitForTimeout(200);
-    assert.equal(await bgmCheckbox.isChecked(), false, 'BGM should be unchecked');
+    assert.equal(await bgmCheckbox.isChecked(), false, 'BGM should be unchecked again');
 
     const uncheckedState = await page.evaluate(() => {
         const settings = JSON.parse(localStorage.getItem('halfne-toy-settings') || '{}');
         return settings.bgm;
     });
     assert.equal(uncheckedState, false, 'localStorage should persist bgm: false');
-
-    // Re-check BGM
-    await bgmCheckbox.check();
-    await page.waitForTimeout(200);
-    assert.equal(await bgmCheckbox.isChecked(), true, 'BGM should be checked again');
-
-    const recheckedState = await page.evaluate(() => {
-        const settings = JSON.parse(localStorage.getItem('halfne-toy-settings') || '{}');
-        return settings.bgm;
-    });
-    assert.equal(recheckedState, true, 'localStorage should persist bgm: true');
 
     // Close menu
     await page.getByRole('button', { name: '关闭菜单', exact: true }).click();

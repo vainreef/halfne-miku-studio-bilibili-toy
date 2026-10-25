@@ -8,7 +8,7 @@
 class BgmController {
     constructor() {
         this.audio = null;
-        this.enabled = true;
+        this.enabled = false;
         this.isPlaying = false;
         this.unlockListenersBound = false;
         this.src = `${import.meta.env.BASE_URL}audio/You_and_Me.mp3`;
