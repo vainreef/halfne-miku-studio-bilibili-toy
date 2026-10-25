@@ -1,7 +1,7 @@
 /**
  * 全局背景音乐 (BGM) 控制器
  * - 默认自动播放（支持循环播放）
- * - 智能规避现代移动端与浏览器 Autoplay 拦截：自动挂载单次手势解锁监听
+ * - 智能规避现代移动端与 WebView Autoplay 拦截：合规手势解锁 (touchend / click)
  * - 响应用户设置开关与标签页前后台可见性切换 (Page Visibility)
  */
 
@@ -20,10 +20,22 @@ class BgmController {
     init() {
         if (typeof window === 'undefined' || this.audio) return;
 
-        this.audio = new Audio(this.src);
+        let audioUrl = this.src;
+        try {
+            audioUrl = new URL(this.src, window.location.href).href;
+        } catch {}
+
+        this.audio = new Audio(audioUrl);
         this.audio.loop = true;
         this.audio.preload = 'auto';
-        this.audio.volume = 0.65; // 舒缓温和的默认音量
+        this.audio.volume = 0.65;
+        this.audio.setAttribute('playsinline', 'true');
+        this.audio.setAttribute('webkit-playsinline', 'true');
+        this.audio.playsInline = true;
+
+        this.audio.addEventListener('error', (e) => {
+            console.warn('[BGM] Audio error:', e);
+        });
 
         document.addEventListener('visibilitychange', this.handleVisibilityChange);
     }
@@ -43,21 +55,21 @@ class BgmController {
 
     bindUnlockListeners() {
         if (this.unlockListenersBound || typeof window === 'undefined') return;
-        const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
-        events.forEach(evt => window.addEventListener(evt, this.handleUserInteraction, { once: true, capture: true }));
+        // 关键：iOS WebKit 与 WebView 仅认可 touchend / click / keydown 为合法手势，严格排除 touchstart/pointerdown
+        const events = ['click', 'touchend', 'keydown'];
+        events.forEach(evt => window.addEventListener(evt, this.handleUserInteraction, { capture: true, passive: true }));
         this.unlockListenersBound = true;
     }
 
     unbindUnlockListeners() {
         if (!this.unlockListenersBound || typeof window === 'undefined') return;
-        const events = ['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'];
+        const events = ['click', 'touchend', 'keydown'];
         events.forEach(evt => window.removeEventListener(evt, this.handleUserInteraction, { capture: true }));
         this.unlockListenersBound = false;
     }
 
     handleUserInteraction() {
-        this.unbindUnlockListeners();
-        if (this.enabled) {
+        if (this.enabled && !this.isPlaying) {
             this.play();
         }
     }
@@ -71,10 +83,11 @@ class BgmController {
             promise
                 .then(() => {
                     this.isPlaying = true;
+                    // 只有成功起播后才卸载手势监听
                     this.unbindUnlockListeners();
                 })
                 .catch((err) => {
-                    // 浏览器 Autoplay 策略拦截，等待用户首次点击或触摸时自动解锁
+                    // 若受策略限制未能立即起播，继续保持手势解锁监听，直至用户首触触发
                     this.isPlaying = false;
                     this.bindUnlockListeners();
                 });
